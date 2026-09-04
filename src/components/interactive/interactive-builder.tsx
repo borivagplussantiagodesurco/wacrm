@@ -47,7 +47,7 @@ export function blankListPayload(): InteractiveListPayload {
   return {
     kind: "list",
     body: "",
-    button_label: "Menu",
+    button_label: "Menú",
     sections: [{ title: "", rows: [{ id: "row_1", title: "" }] }],
   };
 }

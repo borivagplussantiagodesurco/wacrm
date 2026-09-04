@@ -132,9 +132,9 @@ function groupMessagesByDate(messages: Message[]) {
 }
 
 const STATUS_OPTIONS: { label: string; value: ConversationStatus; color: string }[] = [
-  { label: "Open", value: "open", color: "text-primary" },
-  { label: "Pending", value: "pending", color: "text-amber-400" },
-  { label: "Closed", value: "closed", color: "text-muted-foreground" },
+  { label: "Abierta", value: "open", color: "text-primary" },
+  { label: "Pendiente", value: "pending", color: "text-amber-400" },
+  { label: "Cerrada", value: "closed", color: "text-muted-foreground" },
 ];
 
 /**
@@ -786,7 +786,7 @@ export function MessageThread({
         return;
       }
       if (messageId.startsWith("temp-")) {
-        toast.error("Wait for the message to finish sending");
+        toast.error("Espera a que el mensaje termine de enviarse");
         return;
       }
 
@@ -851,7 +851,7 @@ export function MessageThread({
 
       if (error) {
         console.error("Failed to update assignment:", error);
-        toast.error("Failed to update assignment");
+        toast.error("No se pudo actualizar la asignación");
         return;
       }
 

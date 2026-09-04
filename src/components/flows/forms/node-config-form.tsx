@@ -254,7 +254,7 @@ function SendButtonsForm({
         ...buttons,
         {
           reply_id: `btn_${buttons.length + 1}`,
-          title: "Option",
+          title: "Opción",
           next_node_key: "",
         },
       ],
@@ -401,7 +401,7 @@ function SendListForm({
           rows: [
             {
               reply_id: `row_${totalRows + 1}`,
-              title: `Option ${totalRows + 1}`,
+              title: `Opción ${totalRows + 1}`,
               next_node_key: "",
             },
           ],
@@ -438,7 +438,7 @@ function SendListForm({
                 ...s.rows,
                 {
                   reply_id: `row_${totalRows + 1}`,
-                  title: `Option ${totalRows + 1}`,
+                  title: `Opción ${totalRows + 1}`,
                   next_node_key: "",
                 },
               ],
@@ -498,7 +498,7 @@ function SendListForm({
                   size="sm"
                   onClick={() => removeSection(sIdx)}
                   className="shrink-0 text-red-400 hover:bg-red-500/10 hover:text-red-300"
-                  aria-label="Remove section"
+                  aria-label="Quitar sección"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -657,7 +657,7 @@ function ConditionForm({
               onValueChange={(v) => onUpdateConfig({ subject_key: v })}
             >
               <SelectTrigger className="bg-muted">
-                <SelectValue placeholder="Pick a tag…" />
+                <SelectValue placeholder="Elige una etiqueta…" />
               </SelectTrigger>
               <SelectContent>
                 {tags.map((t) => (
@@ -805,7 +805,7 @@ function SetTagForm({
               onValueChange={(v) => onUpdateConfig({ tag_id: v })}
             >
               <SelectTrigger className="bg-muted">
-                <SelectValue placeholder="Pick a tag…" />
+                <SelectValue placeholder="Elige una etiqueta…" />
               </SelectTrigger>
               <SelectContent>
                 {tags.map((t) => (

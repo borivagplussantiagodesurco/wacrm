@@ -143,17 +143,17 @@ export function defaultConfigFor(type: NodeType): Record<string, unknown> {
     case "send_buttons":
       return {
         text: "",
-        buttons: [{ reply_id: "yes", title: "Yes", next_node_key: "" }],
+        buttons: [{ reply_id: "yes", title: "Sí", next_node_key: "" }],
       };
     case "send_list":
       return {
         text: "",
-        button_label: "View options",
+        button_label: "Ver opciones",
         sections: [
           {
             title: "",
             rows: [
-              { reply_id: "row_1", title: "Option 1", next_node_key: "" },
+              { reply_id: "row_1", title: "Opción 1", next_node_key: "" },
             ],
           },
         ],
