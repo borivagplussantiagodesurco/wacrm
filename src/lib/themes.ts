@@ -19,6 +19,7 @@ export const THEME_IDS = [
   "cobalt",
   "amber",
   "rose",
+  "sage",
 ] as const;
 
 export type ThemeId = (typeof THEME_IDS)[number];
@@ -96,6 +97,12 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
     name: "Rosa",
     tagline: "Audaz y moderno — D2C, creadores de contenido, lifestyle.",
     swatch: "oklch(0.645 0.22 16)",
+  },
+  {
+    id: "sage",
+    name: "Salvia",
+    tagline: "El verde de BorivagPlus — sereno y botánico, para marcas de bienestar.",
+    swatch: "oklch(0.55 0.09 138)",
   },
 ];
 
