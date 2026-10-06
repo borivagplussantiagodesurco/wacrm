@@ -1,0 +1,33 @@
+name: Keepalive
+
+# Supabase free tier pauses a project after 7 days with no API activity.
+# This workflow hits the app's own maintenance cron routes once a day —
+# which both does their real job (sweep abandoned flow runs / run due
+# automations) and, as a side effect, touches the database so it never
+# goes seven days idle.
+#
+# Needs one manual step: add a repository secret named
+# AUTOMATION_CRON_SECRET (Settings → Secrets and variables → Actions)
+# with the same value already set in Vercel's env vars.
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    name: Ping cron routes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit /api/flows/cron
+        run: |
+          curl -sf -o /dev/null -w "flows/cron: %{http_code}\n" \
+            -H "x-cron-secret: ${{ secrets.AUTOMATION_CRON_SECRET }}" \
+            https://wacrm-zeta-three.vercel.app/api/flows/cron
+
+      - name: Hit /api/automations/cron
+        run: |
+          curl -sf -o /dev/null -w "automations/cron: %{http_code}\n" \
+            -H "x-cron-secret: ${{ secrets.AUTOMATION_CRON_SECRET }}" \
+            https://wacrm-zeta-three.vercel.app/api/automations/cron
