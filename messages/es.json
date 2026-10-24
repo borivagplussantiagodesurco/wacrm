@@ -15,7 +15,7 @@
     "createAccount": "Crear cuenta"
   },
   "Sidebar": {
-    "title": "Plantilla de CRM para WhatsApp",
+    "title": "CRM para WhatsApp",
     "dashboard": "Panel",
     "inbox": "Bandeja de entrada",
     "notifications": "Notificaciones",
@@ -38,7 +38,10 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configuración",
-    "menuSignOut": "Cerrar sesión"
+    "menuSignOut": "Cerrar sesión",
+    "radar": "Radar",
+    "tasks": "Tareas",
+    "catalog": "Catálogo"
   },
   "Header": {
     "dashboard": "Panel",
@@ -55,7 +58,10 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configuración",
-    "menuSignOut": "Cerrar sesión"
+    "menuSignOut": "Cerrar sesión",
+    "radar": "Radar",
+    "tasks": "Tareas",
+    "catalog": "Catálogo"
   },
   "ModeToggle": {
     "switchMode": "Cambiar a modo {mode}"
@@ -384,9 +390,9 @@
         "custom": "Campos personalizados",
         "deals": "Negocios",
         "tags": "Etiquetas",
-      "noTags": "Sin etiquetas",
-      "noDeals": "Sin negocios",
-      "addNotePlaceholder": "Agregar una nota..."
+        "noTags": "Sin etiquetas",
+        "noDeals": "Sin negocios",
+        "addNotePlaceholder": "Agregar una nota..."
       },
       "actions": {
         "edit": "Editar",
@@ -1313,7 +1319,7 @@
       "labelTooLong": "La etiqueta debe tener {max} caracteres o menos",
       "copied": "Enlace de invitación copiado",
       "clipboardBlocked": "Portapapeles bloqueado — copia el enlace manualmente",
-      "whatsappMessage": "Únete a {accountName} en wacrm usando este enlace (válido por {expiresInDays} días): {url}"
+      "whatsappMessage": "Únete a {accountName} en Mehys CRM usando este enlace (válido por {expiresInDays} días): {url}"
     },
     "tagsAndFields": {
       "title": "Campos y etiquetas",
@@ -1369,13 +1375,11 @@
       "deleteLocallyAria": "Eliminar plantilla localmente",
       "deleteMetaLocallyTitle": "Eliminar de Meta y localmente",
       "deleteLocallyTitle": "Eliminar localmente",
-
       "dialogEditTitle": "Editar plantilla de mensaje",
       "dialogNewTitle": "Nueva plantilla de mensaje",
       "dialogEditDesc": "Guarda tus cambios para reenviarlos a Meta. El estado volverá a PENDIENTE durante la revisión.",
       "dialogNewDesc": "Crea una plantilla y envíala a Meta para su aprobación. Una vez aprobada, podrás usarla en difusiones y en la bandeja de entrada.",
       "authWarning": "Las plantillas de AUTENTICACIÓN tienen una forma fija de cuerpo + botón OTP que requiere un creador distinto. Créalas por ahora en Meta WhatsApp Manager y usa <bold>Sincronizar desde Meta</bold> para traerlas.",
-
       "templateName": "Nombre de la plantilla",
       "namePlaceholder": "p. ej. confirmacion_pedido",
       "nameFixed": "El nombre queda fijo una vez que la plantilla existe en Meta — crea una nueva plantilla para cambiarlo.",
@@ -1384,7 +1388,6 @@
       "language": "Idioma",
       "langFixed": "El idioma queda fijo una vez que la plantilla existe en Meta.",
       "langHint": "Debe coincidir exactamente con el código en Meta — <code>es_ES</code> y <code>es</code> son distintos.",
-
       "header": "Encabezado",
       "headerNone": "Ninguno",
       "headerText": "Texto",
@@ -1394,7 +1397,6 @@
       "headerTextPlaceholder": "Texto del encabezado (máx. 60 caracteres, {{1}} opcional)",
       "headerSampleAria": "Valor de ejemplo para la variable del encabezado",
       "headerSamplePlaceholder": "Valor de ejemplo para {{1}} (requerido para la revisión de Meta)",
-
       "uploadImage": "Subir imagen",
       "uploadHint": "JPEG o PNG, ≤5 MB",
       "mediaUrlPlaceholder": "https://… (o pega un enlace público de {format})",
@@ -1402,17 +1404,14 @@
       "mediaHint": "Debe ser un enlace HTTPS de acceso público. Meta lo obtiene una vez durante la revisión, así que debe estar activo ~24 horas.",
       "videoHint": " Recomendado: MP4 / 3GPP, ≤16 MB, ≤60 segundos.",
       "documentHint": " Recomendado: PDF, ≤100 MB.",
-
       "bodyText": "Texto del cuerpo",
       "bodyPlaceholder": "Hola {{1}}, tu pedido {{2}} está confirmado.",
       "bodyHint": "Usa {{1}}, {{2}} para variables (deben ser contiguas empezando en {{1}}).",
       "sampleValues": "Valores de ejemplo (Meta los usa para revisar tu plantilla)",
       "sampleAria": "Valor de ejemplo para la variable del cuerpo {var}",
       "samplePlaceholder": "Ejemplo para {var}",
-
       "footer": "Pie de página (opcional)",
       "footerPlaceholder": "Texto de pie de página opcional (máx. 60 caracteres)",
-
       "buttons": "Botones (opcional)",
       "addButton": "Agregar botón",
       "buttonsLimit": "Hasta {max} botones. Los botones de RESPUESTA RÁPIDA deben ir antes que los de URL / teléfono / código de copia.",
@@ -1425,19 +1424,16 @@
       "urlSamplePlaceholder": "Valor de ejemplo para {{1}} (requerido cuando la URL tiene una variable)",
       "phonePlaceholder": "+51987654321",
       "codePlaceholder": "Código de ejemplo (p. ej. VERANO20)",
-
       "cancel": "Cancelar",
       "saving": "Guardando…",
       "submitting": "Enviando…",
       "saveResubmit": "Guardar y reenviar",
       "submitApproval": "Enviar para aprobación",
-
       "deleteDialogTitle": "¿Eliminar plantilla?",
-      "deleteMetaDesc": "\"{name}\" se eliminará de Meta y de wacrm. Las difusiones activas que usan esta plantilla empezarán a fallar en su próximo envío. No se puede deshacer.",
-      "deleteLocalDesc": "\"{name}\" se eliminará de wacrm. Nunca se envió a Meta, así que no se necesita limpieza remota.",
+      "deleteMetaDesc": "\"{name}\" se eliminará de Meta y de Mehys CRM. Las difusiones activas que usan esta plantilla empezarán a fallar en su próximo envío. No se puede deshacer.",
+      "deleteLocalDesc": "\"{name}\" se eliminará de Mehys CRM. Nunca se envió a Meta, así que no se necesita limpieza remota.",
       "deleting": "Eliminando…",
       "delete": "Eliminar",
-
       "toastLoadFailed": "Error al cargar las plantillas",
       "toastSubmitFailed": "Error al enviar",
       "toastSubmitEditSuccess": "Edición enviada — Meta suele revisar en un plazo de 24 horas.",
@@ -1476,7 +1472,7 @@
       "notConnected": "No conectado",
       "connectedDesc": "Tu token de acceso se autentica con Meta. Consulta el estado de registro abajo para saber si los webhooks están realmente conectados.",
       "notConnectedDesc": "Configura tus credenciales de la API de Meta abajo para conectar tu cuenta de WhatsApp Business.",
-      "registered": "Registrado — Meta entregará eventos a wacrm",
+      "registered": "Registrado — Meta entregará eventos a Mehys CRM",
       "notRegistered": "No registrado — Meta no entregará eventos",
       "verifyWithMeta": "Verificar con Meta",
       "subscribedSince": "Suscrito desde el {date}. Haz clic en Verificar con Meta si los eventos dejan de llegar.",
@@ -1500,7 +1496,7 @@
       "twoStepPin": "PIN de verificación en dos pasos",
       "optional": "(opcional)",
       "pinPlaceholder": "PIN de 6 dígitos de Meta WhatsApp Manager",
-      "pinHint": "Solo se necesita para conectar mensajes entrantes en un número de producción. Configúralo en Meta Business Manager → Cuentas de WhatsApp → Números de teléfono → Verificación en dos pasos, y luego pégalo aquí para que wacrm pueda suscribir el número — de lo contrario, Meta enruta los eventos entrantes a la última app que reclamó ese número (el síntoma que afecta a un segundo número bajo una misma WABA compartida). Los números de prueba de Meta no tienen PIN y ya están preregistrados — déjalo en blanco para esos. Dejarlo en blanco también mantiene intacto un registro existente.",
+      "pinHint": "Solo se necesita para conectar mensajes entrantes en un número de producción. Configúralo en Meta Business Manager → Cuentas de WhatsApp → Números de teléfono → Verificación en dos pasos, y luego pégalo aquí para que Mehys CRM pueda suscribir el número — de lo contrario, Meta enruta los eventos entrantes a la última app que reclamó ese número (el síntoma que afecta a un segundo número bajo una misma WABA compartida). Los números de prueba de Meta no tienen PIN y ya están preregistrados — déjalo en blanco para esos. Dejarlo en blanco también mantiene intacto un registro existente.",
       "webhookTitle": "Configuración del webhook",
       "webhookDesc": "Usa esta URL como tu callback de webhook en el panel de apps de Meta.",
       "webhookUrl": "URL de callback del webhook",
@@ -1583,7 +1579,6 @@
       "profileSaved": "Perfil guardado",
       "emailChangeFailed": "Error al cambiar el correo: {message}",
       "profileSavedEmailCheck": "Perfil guardado — revisa tu correo para confirmar el cambio de dirección",
-
       "passwordTitle": "Contraseña",
       "passwordDesc": "Usa al menos {min} caracteres. Seguirás con la sesión iniciada en este dispositivo después de cambiarla.",
       "currentPassword": "Contraseña actual",
@@ -1597,7 +1592,6 @@
       "currentPasswordIncorrect": "La contraseña actual es incorrecta",
       "passwordUpdateFailed": "Error al actualizar la contraseña: {message}",
       "passwordUpdated": "Contraseña actualizada",
-
       "sessionsTitle": "Sesiones activas",
       "sessionsDesc": "Cierra sesión en todos los dispositivos donde estés conectado — incluido este. Útil si perdiste una laptop o compartiste tu contraseña.",
       "signOutAll": "Cerrar sesión en todos los dispositivos",
@@ -1673,7 +1667,7 @@
     },
     "aiConfig": {
       "title": "Configuración del agente",
-      "description": "Usa tu propia clave de OpenAI o Anthropic. wacrm llama al proveedor directamente con tu clave — sin costos de IA por asiento, y tus datos siguen siendo tuyos. Esto impulsa las respuestas redactadas con IA en la bandeja de entrada, el bot de respuesta automática y el Playground.",
+      "description": "Usa tu propia clave de OpenAI o Anthropic. Mehys CRM llama al proveedor directamente con tu clave — sin costos de IA por asiento, y tus datos siguen siendo tuyos. Esto impulsa las respuestas redactadas con IA en la bandeja de entrada, el bot de respuesta automática y el Playground.",
       "adminOnlyConfig": "Solo los administradores y propietarios pueden cambiar la configuración de IA.",
       "loadFailed": "Error al cargar la configuración de IA",
       "providerAndKey": "Proveedor y clave",
@@ -1738,5 +1732,78 @@
       "reindexTooltip": "Vuelve a vectorizar todos los documentos (p. ej. después de agregar una clave de embeddings)",
       "loading": "Cargando…"
     }
+  },
+  "Tasks": {
+    "title": "Tareas",
+    "subtitle": "Recordatorios de seguimiento para no perder ninguna venta.",
+    "new": "Nueva tarea",
+    "filterPending": "Pendientes",
+    "filterOverdue": "Vencidas",
+    "filterDone": "Hechas",
+    "loading": "Cargando…",
+    "empty": "No hay tareas aquí.",
+    "loadError": "No se pudieron cargar las tareas.",
+    "saveError": "No se pudo guardar el cambio.",
+    "created": "Tarea creada.",
+    "complete": "Marcar como hecha",
+    "reopen": "Reabrir",
+    "delete": "Eliminar",
+    "due": "Vence",
+    "fieldTitle": "¿Qué hay que hacer?",
+    "fieldDue": "Fecha y hora",
+    "fieldContact": "Contacto",
+    "noContact": "Sin contacto",
+    "fieldNotes": "Notas",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "Catalog": {
+    "title": "Catálogo",
+    "subtitle": "Productos y packs que ofreces, con precio y stock.",
+    "new": "Nuevo producto",
+    "edit": "Editar producto",
+    "delete": "Eliminar",
+    "loading": "Cargando…",
+    "empty": "Aún no hay productos. Crea el primero.",
+    "loadError": "No se pudo cargar el catálogo.",
+    "saveError": "No se pudo guardar el producto.",
+    "saved": "Producto guardado.",
+    "invalidPrice": "El precio no es válido.",
+    "invalidStock": "El stock debe ser un número entero mayor o igual a 0.",
+    "skuDuplicate": "Ya existe un producto con ese SKU.",
+    "confirmDelete": "¿Eliminar «{name}»?",
+    "colName": "Nombre",
+    "colSku": "SKU",
+    "colPrice": "Precio",
+    "colStock": "Stock",
+    "colStatus": "Estado",
+    "fieldCurrency": "Moneda",
+    "fieldDescription": "Descripción",
+    "stockPlaceholder": "Vacío = sin control",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "Radar": {
+    "title": "Radar de seguimiento",
+    "subtitle": "Quién está esperando respuesta y qué conversaciones se enfriaron.",
+    "coolAfter": "Enfriado tras",
+    "hoursOption": "{count} horas",
+    "daysOption": "{count, plural, =1 {1 día} other {# días}}",
+    "waitingTitle": "Esperando tu respuesta",
+    "waitingHint": "El cliente escribió y aún no se le contesta.",
+    "cooledTitle": "Conversaciones enfriadas",
+    "cooledHint": "Ya se les respondió, pero el hilo lleva tiempo sin movimiento.",
+    "emptySection": "Todo al día por aquí.",
+    "loading": "Cargando…",
+    "loadError": "No se pudo cargar el radar.",
+    "open": "Abrir chat",
+    "followUp": "Crear seguimiento",
+    "taskTitle": "Dar seguimiento a {name}",
+    "taskCreated": "Seguimiento creado para mañana a las 9:00.",
+    "taskError": "No se pudo crear el seguimiento.",
+    "hoursAgo": "hace {count} h",
+    "daysAgo": "hace {count} d"
   }
 }
