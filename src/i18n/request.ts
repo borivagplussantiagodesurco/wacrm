@@ -1,8 +1,8 @@
 import { getRequestConfig } from 'next-intl/server';
 
 export default getRequestConfig(async () => {
-  // Read the locale from the environment, defaulting to 'en'
-  const locale = process.env.NEXT_PUBLIC_APP_LOCALE || 'en';
+  // Idioma desde el entorno; por defecto español (producto Mehys CRM).
+  const locale = process.env.NEXT_PUBLIC_APP_LOCALE || 'es';
 
   let messages;
   try {
