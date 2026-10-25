@@ -10,12 +10,14 @@ name: Keepalive
 #   - Secret   AUTOMATION_CRON_SECRET  (el mismo valor que en Vercel)
 #   - Variable APP_URL                 (opcional; por defecto la URL de producción)
 #
-# GitHub solo ejecuta `schedule` desde la rama por defecto (main).
+# GitHub solo ejecuta `schedule` desde la rama por defecto (main). El secreto
+# AUTOMATION_CRON_SECRET ya existe en el repositorio (el keepalive original
+# corre a diario con éxito desde el 2026-10-13).
 
 on:
   schedule:
-    # Cada 3 días a las 09:00 UTC: muy por debajo de la ventana de 7 días.
-    - cron: '0 9 */3 * *'
+    # Cada día a las 09:00 UTC: muy por debajo de la ventana de 7 días de pausa.
+    - cron: '0 9 * * *'
   workflow_dispatch: {}
 
 permissions:
