@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireRole, toErrorResponse } from '@/lib/auth/account'
 import { sendTemplateMessage } from '@/lib/whatsapp/meta-api'
+import { supabaseAdmin } from '@/lib/automations/admin-client'
+import { signTemplateHeaderParams } from '@/lib/storage/private-media'
 import { decrypt } from '@/lib/whatsapp/encryption'
 import type { SendTimeParams } from '@/lib/whatsapp/template-send-builder'
 import { resolveTemplateRow } from '@/lib/whatsapp/template-body'
@@ -212,7 +214,11 @@ export async function POST(request: Request) {
             templateName: template_name,
             language: resolvedTemplate.language,
             template: templateRow ?? undefined,
-            messageParams: recipient.messageParams,
+            messageParams: await signTemplateHeaderParams(
+              supabaseAdmin,
+              templateRow,
+              recipient.messageParams,
+            ),
             params: recipient.params ?? [],
           })
           sentMessageId = result.messageId

@@ -16,6 +16,7 @@ import {
   isRecipientNotAllowedError,
 } from '@/lib/whatsapp/phone-utils'
 import { supabaseAdmin } from './admin-client'
+import { signChatMediaUrl } from '@/lib/storage/private-media'
 
 // ------------------------------------------------------------
 // Flows-side Meta sender (interactive variants).
@@ -209,7 +210,8 @@ export async function engineSendMedia(
       accessToken,
       to: phone,
       kind: args.kind,
-      link: args.link,
+      // Private bucket: Meta gets a short-lived signed URL.
+      link: await signChatMediaUrl(db, args.link, 900),
       caption: args.caption,
       filename: args.filename,
     })

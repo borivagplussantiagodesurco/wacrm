@@ -1,5 +1,6 @@
 'use client';
 
+import { useResolvedMediaUrl } from '@/hooks/use-resolved-media-url';
 import { useEffect, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Contact, CustomField, MessageTemplate } from '@/types';
@@ -77,6 +78,7 @@ export function Step3Personalize({
   onBack,
 }: Step3Props) {
   const t = useTranslations('Broadcasts.wizard');
+  const headerPreviewSrc = useResolvedMediaUrl(headerMediaUrl.trim());
   const [customFields, setCustomFields] = useState<CustomField[]>([]);
   const [loadingFields, setLoadingFields] = useState(true);
   const [firstContact, setFirstContact] = useState<Contact | null>(null);
@@ -269,7 +271,7 @@ export function Step3Personalize({
             headerMediaUrl.trim() && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={headerMediaUrl.trim()}
+                src={headerPreviewSrc ?? undefined}
                 alt={t('personalize.headerPreviewAlt')}
                 className="mt-3 max-h-40 rounded-lg border border-border object-contain"
               />
