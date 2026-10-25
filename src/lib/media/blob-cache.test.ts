@@ -32,6 +32,9 @@ function trackingFetch(): MediaFetch & { calls: string[] } {
 }
 
 beforeEach(() => {
+  // El CI define su propio NEXT_PUBLIC_SUPABASE_URL: se fija el origen que
+  // usan las URLs de este archivo para que el resultado no dependa del entorno.
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://x.supabase.co");
   __resetMediaBlobCache();
   __resetChatMediaUrlCache();
   createSignedUrl.mockReset();
