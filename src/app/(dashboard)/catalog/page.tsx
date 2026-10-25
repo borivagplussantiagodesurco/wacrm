@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useCan } from "@/hooks/use-can";
 import { useRefreshOnFocus } from "@/hooks/use-refresh-on-focus";
-import { formatCurrency } from "@/lib/currency";
+import { formatPrice } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import { GatedButton } from "@/components/ui/gated-button";
 import { Input } from "@/components/ui/input";
@@ -228,7 +228,7 @@ export default function CatalogPage() {
                   </td>
                   <td className="p-3 text-muted-foreground">{p.sku ?? "—"}</td>
                   <td className="p-3 text-right tabular-nums">
-                    {formatCurrency(Number(p.price), p.currency)}
+                    {formatPrice(Number(p.price), p.currency)}
                   </td>
                   <td
                     className={`p-3 text-right tabular-nums ${p.stock === 0 ? "font-medium text-red-600 dark:text-red-400" : ""}`}

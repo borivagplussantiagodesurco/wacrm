@@ -106,3 +106,30 @@ export function formatCompactNumber(value: number): string {
   if (v >= 1_000) return `${(v / 1_000).toFixed(1)}k`;
   return v.toFixed(0);
 }
+
+/**
+ * Precio de catálogo: a diferencia de {@link formatCurrency} (montos de
+ * negocios, sin decimales), muestra los centavos cuando el precio los tiene
+ * (S/ 29,90) y nada cuando es entero (S/ 245). Total: nunca lanza.
+ */
+export function formatPrice(
+  value: number,
+  currency: string = DEFAULT_CURRENCY,
+): string {
+  const code = (currency || DEFAULT_CURRENCY).trim();
+  const amount = Number(value) || 0;
+  const fractionDigits = Number.isInteger(amount) ? 0 : 2;
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: code,
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `${code} ${amount.toLocaleString(undefined, {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: 2,
+    })}`;
+  }
+}

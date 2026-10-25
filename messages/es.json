@@ -1350,7 +1350,9 @@
       "fieldsCount": "{count} {count, plural, =1 {campo personalizado} other {campos personalizados}}",
       "appearance": "modo {mode} · acento {theme}",
       "yourAccount": "Tu cuenta",
-      "loading": "Cargando…"
+      "loading": "Cargando…",
+      "modeLight": "claro",
+      "modeDark": "oscuro"
     },
     "members": {
       "title": "Miembros del equipo",

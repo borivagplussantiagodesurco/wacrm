@@ -1350,7 +1350,9 @@
       "fieldsCount": "커스텀 필드 {count}개",
       "appearance": "{mode} 모드 · {theme} 색상",
       "yourAccount": "내 계정",
-      "loading": "불러오는 중…"
+      "loading": "불러오는 중…",
+      "modeLight": "라이트",
+      "modeDark": "다크"
     },
     "members": {
       "title": "팀원",
