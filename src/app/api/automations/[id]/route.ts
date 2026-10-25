@@ -11,6 +11,7 @@ import {
   validateStepsForActivation,
   validateTriggerForActivation,
 } from '@/lib/automations/validate'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 async function requireUser() {
   const supabase = await createClient()
@@ -36,7 +37,7 @@ export async function GET(
     .eq('user_id', user.id)
     .maybeSingle()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse(error)
   if (!automation) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   const steps = await loadStepsTree(id)
@@ -153,6 +154,6 @@ export async function DELETE(
     .delete()
     .eq('id', id)
     .eq('user_id', user.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse(error)
   return NextResponse.json({ ok: true })
 }

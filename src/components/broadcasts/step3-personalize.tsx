@@ -270,15 +270,15 @@ export function Step3Personalize({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={headerMediaUrl.trim()}
-                alt="Header preview"
+                alt={t('personalize.headerPreviewAlt')}
                 className="mt-3 max-h-40 rounded-lg border border-border object-contain"
               />
             )}
           {headerMediaError && (
             <p className="mt-1.5 text-xs text-amber-300">
               {headerMediaError === 'missing'
-                ? 'A media URL is required to send this template.'
-                : 'Enter a valid http(s) URL.'}
+                ? t('personalize.mediaUrlRequired')
+                : t('personalize.mediaUrlInvalid')}
             </p>
           )}
         </div>
@@ -344,7 +344,7 @@ export function Step3Personalize({
                         onChange={(e) =>
                           updateVariable(key, { value: e.target.value })
                         }
-                        placeholder="Enter value..."
+                        placeholder={t('personalize.staticValuePlaceholder')}
                         className="border-border bg-muted text-foreground placeholder:text-muted-foreground"
                       />
                     ) : mapping.type === 'field' ? (
@@ -376,10 +376,10 @@ export function Step3Personalize({
                           <SelectValue
                             placeholder={
                               loadingFields
-                                ? 'Loading…'
+                                ? t('personalize.loadingFields')
                                 : customFields.length === 0
-                                  ? 'No custom fields'
-                                  : 'Select custom field…'
+                                  ? t('personalize.noCustomFields')
+                                  : t('personalize.selectCustomField')
                             }
                           />
                         </SelectTrigger>

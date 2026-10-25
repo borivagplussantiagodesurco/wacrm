@@ -1,38 +1,52 @@
 name: Keepalive
 
-# Supabase free tier pauses a project after 7 days with no API activity
-# (see 09_CRM/00_DIAGNOSTICO_WACRM.md). This workflow hits the app's own
-# maintenance cron routes once a day — which both does their real job
-# (sweep abandoned flow runs / run due automations) and, as a side
-# effect, touches the database so it never goes seven days idle.
+# El plan gratis de Supabase pausa el proyecto tras 7 días sin actividad.
+# Este workflow llama a /api/health con el secreto de cron; esa ruta hace una
+# lectura real en la base de datos (cuenta como actividad) y responde 503 si
+# la base no contesta, de modo que el job falla de forma visible y abre un
+# issue en el repositorio.
 #
-# Needs one manual step: add a repository secret named
-# AUTOMATION_CRON_SECRET (Settings → Secrets and variables → Actions)
-# with the same value already set in Vercel's env vars. Without it the
-# job runs and fails loudly (visible in the Actions tab) rather than
-# silently doing nothing.
+# Requiere (Settings → Secrets and variables → Actions):
+#   - Secret   AUTOMATION_CRON_SECRET  (el mismo valor que en Vercel)
+#   - Variable APP_URL                 (opcional; por defecto la URL de producción)
+#
+# GitHub solo ejecuta `schedule` desde la rama por defecto (main).
 
 on:
   schedule:
-    # 09:00 UTC daily — well under the 7-day pause window, and during
-    # Peru business hours (04:00 local) so a failure shows up on the
-    # same day someone's awake to see the Actions tab.
-    - cron: '0 9 * * *'
+    # Cada 3 días a las 09:00 UTC: muy por debajo de la ventana de 7 días.
+    - cron: '0 9 */3 * *'
   workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   ping:
-    name: Ping cron routes
+    name: Ping /api/health
     runs-on: ubuntu-latest
+    env:
+      APP_URL: ${{ vars.APP_URL || 'https://wacrm-zeta-three.vercel.app' }}
     steps:
-      - name: Hit /api/flows/cron
+      - name: Comprobar app y base de datos
+        env:
+          CRON_SECRET: ${{ secrets.AUTOMATION_CRON_SECRET }}
         run: |
-          curl -sf -o /dev/null -w "flows/cron: %{http_code}\n" \
-            -H "x-cron-secret: ${{ secrets.AUTOMATION_CRON_SECRET }}" \
-            https://wacrm-zeta-three.vercel.app/api/flows/cron
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::Falta el secreto AUTOMATION_CRON_SECRET en el repositorio"
+            exit 1
+          fi
+          curl -sf --retry 3 --retry-delay 10 -o /dev/null \
+            -w "health: %{http_code}\n" \
+            -H "x-cron-secret: $CRON_SECRET" \
+            "$APP_URL/api/health"
 
-      - name: Hit /api/automations/cron
+      - name: Abrir issue si falló
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl -sf -o /dev/null -w "automations/cron: %{http_code}\n" \
-            -H "x-cron-secret: ${{ secrets.AUTOMATION_CRON_SECRET }}" \
-            https://wacrm-zeta-three.vercel.app/api/automations/cron
+          gh issue create --repo "${{ github.repository }}" \
+            --title "Keepalive de Supabase falló ($(date -u +%F))" \
+            --body "El chequeo de salud falló. Revisa la ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

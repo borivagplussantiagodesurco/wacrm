@@ -7,6 +7,7 @@ import { Package, Pencil, Plus, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useCan } from "@/hooks/use-can";
+import { useRefreshOnFocus } from "@/hooks/use-refresh-on-focus";
 import { formatCurrency } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import { GatedButton } from "@/components/ui/gated-button";
@@ -49,6 +50,7 @@ export default function CatalogPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY);
@@ -56,22 +58,34 @@ export default function CatalogPage() {
 
   const defaultCurrency = account?.default_currency ?? "USD";
 
-  const load = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("catalog_products")
-      .select("id,name,sku,description,price,currency,stock,active")
-      .order("name", { ascending: true })
-      .limit(500);
-    if (error) toast.error(t("loadError"));
-    setProducts((data ?? []) as Product[]);
-    setLoading(false);
-  }, [supabase, t]);
+  // `silent` = recarga en segundo plano: si falla y ya hay datos, se conservan.
+  const load = useCallback(
+    async (silent = false) => {
+      try {
+        const { data, error } = await supabase
+          .from("catalog_products")
+          .select("id,name,sku,description,price,currency,stock,active")
+          .order("name", { ascending: true })
+          .limit(500);
+        if (error) throw error;
+        setProducts((data ?? []) as Product[]);
+        setLoadFailed(false);
+      } catch {
+        if (!silent) setLoadFailed(true);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [supabase],
+  );
 
   useEffect(() => {
     // Carga inicial: la función solo actualiza estado tras el await.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
+
+  // Al volver a la pestaña se refresca el catálogo (otro miembro pudo editarlo).
+  useRefreshOnFocus(() => void load(true));
 
   function openNew() {
     setEditingId(null);
@@ -95,39 +109,56 @@ export default function CatalogPage() {
 
   async function save() {
     if (!accountId || !form.name.trim()) return;
-    const price = Number(form.price || 0);
-    const stock = form.stock.trim() === "" ? null : Math.trunc(Number(form.stock));
+    // Acepta coma decimal ("1,5"): se normaliza a punto antes de convertir.
+    const priceText = form.price.trim().replace(",", ".");
+    const stockText = form.stock.trim().replace(",", ".");
+    const price = priceText === "" ? 0 : Number(priceText);
+    const stock = stockText === "" ? null : Math.trunc(Number(stockText));
     if (!Number.isFinite(price) || price < 0) return toast.error(t("invalidPrice"));
     if (stock !== null && (!Number.isFinite(stock) || stock < 0)) {
       return toast.error(t("invalidStock"));
     }
+    const currency = (form.currency || defaultCurrency).trim().toUpperCase();
+    if (!/^[A-Z]{3}$/.test(currency)) return toast.error(t("invalidCurrency"));
     const row = {
       name: form.name.trim(),
       sku: form.sku.trim() || null,
       description: form.description.trim() || null,
       price,
-      currency: (form.currency || defaultCurrency).trim().toUpperCase(),
+      currency,
       stock,
       active: form.active,
     };
     setSaving(true);
-    const { error } = editingId
-      ? await supabase.from("catalog_products").update(row).eq("id", editingId)
-      : await supabase.from("catalog_products").insert({ ...row, account_id: accountId });
-    setSaving(false);
-    if (error) {
-      return toast.error(error.code === "23505" ? t("skuDuplicate") : t("saveError"));
+    let failure: { code?: string } | null = null;
+    try {
+      const { error } = editingId
+        ? await supabase.from("catalog_products").update(row).eq("id", editingId)
+        : await supabase.from("catalog_products").insert({ ...row, account_id: accountId });
+      failure = error;
+    } catch {
+      failure = {};
+    } finally {
+      setSaving(false);
+    }
+    if (failure) {
+      return toast.error(failure.code === "23505" ? t("skuDuplicate") : t("saveError"));
     }
     toast.success(t("saved"));
     setOpen(false);
-    void load();
+    void load(true);
   }
 
   async function remove(p: Product) {
     if (!window.confirm(t("confirmDelete", { name: p.name }))) return;
-    const { error } = await supabase.from("catalog_products").delete().eq("id", p.id);
-    if (error) return toast.error(t("saveError"));
-    void load();
+    try {
+      const { error } = await supabase.from("catalog_products").delete().eq("id", p.id);
+      if (error) throw error;
+    } catch {
+      return toast.error(t("saveError"));
+    }
+    toast.success(t("deleted"));
+    void load(true);
   }
 
   const set = (k: keyof typeof EMPTY, v: string | boolean) =>
@@ -142,13 +173,31 @@ export default function CatalogPage() {
           </h1>
           <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <GatedButton canAct={canEdit} gateReason="edit the catalog" onClick={openNew}>
+        <GatedButton canAct={canEdit} gateReason="editCatalog" onClick={openNew}>
           <Plus className="mr-1 h-4 w-4" /> {t("new")}
         </GatedButton>
       </div>
 
       {loading ? (
         <p className="text-sm text-muted-foreground">{t("loading")}</p>
+      ) : loadFailed ? (
+        <div
+          role="alert"
+          className="flex flex-col items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/5 p-8 text-center"
+        >
+          <p className="text-sm font-medium text-red-600 dark:text-red-400">{t("loadError")}</p>
+          <p className="text-xs text-muted-foreground">{t("loadErrorHint")}</p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setLoading(true);
+              void load();
+            }}
+          >
+            {t("retry")}
+          </Button>
+        </div>
       ) : products.length === 0 ? (
         <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
           {t("empty")}
@@ -163,7 +212,9 @@ export default function CatalogPage() {
                 <th className="p-3 text-right">{t("colPrice")}</th>
                 <th className="p-3 text-right">{t("colStock")}</th>
                 <th className="p-3">{t("colStatus")}</th>
-                <th className="p-3" />
+                <th className="p-3">
+                  <span className="sr-only">{t("colActions")}</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -180,7 +231,7 @@ export default function CatalogPage() {
                     {formatCurrency(Number(p.price), p.currency)}
                   </td>
                   <td
-                    className={`p-3 text-right tabular-nums ${p.stock === 0 ? "font-medium text-red-400" : ""}`}
+                    className={`p-3 text-right tabular-nums ${p.stock === 0 ? "font-medium text-red-600 dark:text-red-400" : ""}`}
                   >
                     {p.stock ?? "—"}
                   </td>
@@ -188,11 +239,21 @@ export default function CatalogPage() {
                   <td className="p-3">
                     {canEdit && (
                       <div className="flex justify-end gap-2">
-                        <button type="button" onClick={() => openEdit(p)} aria-label={t("edit")}>
-                          <Pencil className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                        <button
+                          type="button"
+                          onClick={() => openEdit(p)}
+                          aria-label={t("edit")}
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-primary"
+                        >
+                          <Pencil className="h-4 w-4" />
                         </button>
-                        <button type="button" onClick={() => remove(p)} aria-label={t("delete")}>
-                          <Trash2 className="h-4 w-4 text-muted-foreground hover:text-red-400" />
+                        <button
+                          type="button"
+                          onClick={() => remove(p)}
+                          aria-label={t("delete")}
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     )}
@@ -244,7 +305,7 @@ export default function CatalogPage() {
                   id="p-cur"
                   maxLength={3}
                   value={form.currency}
-                  onChange={(e) => set("currency", e.target.value)}
+                  onChange={(e) => set("currency", e.target.value.toUpperCase())}
                 />
               </div>
             </div>

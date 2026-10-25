@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/automations/admin-client'
 import { resumePendingExecution } from '@/lib/automations/engine'
 import type { AutomationContext } from '@/lib/automations/engine'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 /**
  * Drain due `automation_pending_executions` rows. Meant to be hit
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
     .order('run_at', { ascending: true })
     .limit(50)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse(error)
   if (!due || due.length === 0) return NextResponse.json({ processed: 0 })
 
   let processed = 0

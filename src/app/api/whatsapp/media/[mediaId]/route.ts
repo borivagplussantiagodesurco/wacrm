@@ -3,6 +3,13 @@ import { createClient } from '@/lib/supabase/server'
 import { getMediaUrl, downloadMedia } from '@/lib/whatsapp/meta-api'
 import { decrypt } from '@/lib/whatsapp/encryption'
 
+// El Content-Type viene de Meta: solo se acepta `tipo/subtipo` simple.
+const MIME_RE = /^[a-z]+\/[a-z0-9.+-]+$/i
+function safeContentType(value: string | undefined | null): string {
+  const base = (value ?? '').split(';')[0].trim()
+  return MIME_RE.test(base) ? base : 'application/octet-stream'
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ mediaId: string }> }
@@ -48,6 +55,19 @@ export async function GET(
       )
     }
 
+    // El media id debe pertenecer a un mensaje de ESTA cuenta (RLS filtra
+    // `messages` por cuenta). Sin esto, cualquier miembro podía pedir ids
+    // arbitrarios usando el token de WhatsApp de la cuenta.
+    const { data: owned } = await supabase
+      .from('messages')
+      .select('id')
+      .eq('media_url', `/api/whatsapp/media/${mediaId}`)
+      .limit(1)
+      .maybeSingle()
+    if (!owned) {
+      return NextResponse.json({ error: 'Media not found' }, { status: 404 })
+    }
+
     // Fetch and decrypt WhatsApp config
     const { data: config, error: configError } = await supabase
       .from('whatsapp_config')
@@ -76,8 +96,10 @@ export async function GET(
     return new Response(new Uint8Array(buffer), {
       status: 200,
       headers: {
-        'Content-Type': contentType || mediaInfo.mimeType || 'application/octet-stream',
-        'Cache-Control': 'public, max-age=86400',
+        'Content-Type': safeContentType(contentType || mediaInfo.mimeType),
+        // Dato de clientas (fotos de salud): nunca en cachés compartidas.
+        'Cache-Control': 'private, no-store',
+        'X-Content-Type-Options': 'nosniff',
       },
     })
   } catch (error) {

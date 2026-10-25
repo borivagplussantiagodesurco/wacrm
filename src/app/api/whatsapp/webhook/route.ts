@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto'
 import { NextResponse, after } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { decrypt, encrypt, isLegacyFormat } from '@/lib/whatsapp/encryption'
@@ -20,6 +21,14 @@ import {
 // Inbound processing can fan out to per-media Meta verification calls, so
 // give it headroom beyond the platform default (Vercel clamps this to the
 // plan's ceiling). Tune as needed.
+// Comparación en tiempo constante del verify token (evita adivinarlo
+// midiendo tiempos de respuesta).
+function safeEqual(a: string, b: string): boolean {
+  const ba = Buffer.from(a)
+  const bb = Buffer.from(b)
+  return ba.length === bb.length && timingSafeEqual(ba, bb)
+}
+
 export const maxDuration = 60
 
 // Lazy-initialized to avoid build-time crash when env vars are missing
@@ -133,7 +142,7 @@ export async function GET(request: Request) {
     for (const config of configs) {
       if (!config.verify_token) continue
       try {
-        if (decrypt(config.verify_token) === verifyToken) {
+        if (safeEqual(decrypt(config.verify_token), verifyToken)) {
           matchedConfig = config
           break
         }

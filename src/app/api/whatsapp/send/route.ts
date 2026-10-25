@@ -41,7 +41,12 @@ export async function POST(request: Request) {
       return rateLimitResponse(limit)
     }
 
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    }
     const {
       // `conversation_id` targets an existing thread (inbox). `contact_id`
       // lets a caller initiate from a contact that may have no conversation
