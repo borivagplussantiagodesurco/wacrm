@@ -8,6 +8,7 @@ import {
   validateStepsForActivation,
   validateTriggerForActivation,
 } from '@/lib/automations/validate'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 export async function GET() {
   const supabase = await createClient()
@@ -20,7 +21,7 @@ export async function GET() {
     .from('automations')
     .select('*')
     .order('created_at', { ascending: false })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return dbErrorResponse(error)
   return NextResponse.json({ automations: data ?? [] })
 }
 

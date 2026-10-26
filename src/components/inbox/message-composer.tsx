@@ -1,5 +1,6 @@
 "use client";
 
+import { useResolvedMediaUrl } from "@/hooks/use-resolved-media-url";
 import {
   useState,
   useRef,
@@ -269,15 +270,15 @@ export function MessageComposer({
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         if (data.code === "ai_not_configured") {
-          toast.error("La IA aún no está configurada — actívala en Configuración → Asistente de IA.");
+          toast.error(t("aiNotConfigured"));
         } else {
-          toast.error(data.error ?? "Couldn't draft a reply.");
+          toast.error(data.error ?? t("draftFailed"));
         }
         return;
       }
       const draftText = typeof data.draft === "string" ? data.draft.trim() : "";
       if (!draftText) {
-        toast.error("El asistente no devolvió una respuesta.");
+        toast.error(t("aiEmpty"));
         return;
       }
       setText(draftText);
@@ -292,11 +293,11 @@ export function MessageComposer({
         }
       });
     } catch {
-      toast.error("No se pudo contactar al asistente de IA.");
+      toast.error(t("aiUnreachable"));
     } finally {
       setDrafting(false);
     }
-  }, [drafting, conversationId, adjustHeight]);
+  }, [drafting, conversationId, adjustHeight, t]);
 
   // ---- Interactive message + quick replies --------------------------
 
@@ -390,9 +391,10 @@ export function MessageComposer({
       const max = MEDIA_MAX_BYTES_BY_KIND[kind];
       if (file.size > max) {
         toast.error(
-          `File is ${(file.size / 1024 / 1024).toFixed(1)} MB — ${kind} limit is ${Math.round(
-            max / 1024 / 1024,
-          )} MB.`,
+          t("fileTooLarge", {
+            size: (file.size / 1024 / 1024).toFixed(1),
+            limit: Math.round(max / 1024 / 1024),
+          }),
         );
         return;
       }
@@ -403,12 +405,12 @@ export function MessageComposer({
         removeStaged(draftRef.current?.path);
         setDraft({ kind, mediaUrl: publicUrl, path, filename: file.name, caption: "" });
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Upload failed.");
+        toast.error(err instanceof Error ? err.message : t("uploadFailed"));
       } finally {
         setBusy(false);
       }
     },
-    [removeStaged],
+    [removeStaged, t],
   );
 
   const handlePicked = useCallback(
@@ -431,7 +433,7 @@ export function MessageComposer({
       });
       if (file.size === 0) return; // cancelled / empty take
       if (file.size > MEDIA_MAX_BYTES_BY_KIND.audio) {
-        toast.error("La grabación es muy larga (más de 16 MB).");
+        toast.error(t("recordingTooLong"));
         return;
       }
       setBusy(true);
@@ -440,18 +442,18 @@ export function MessageComposer({
         removeStaged(draftRef.current?.path);
         setDraft({ kind: "audio", mediaUrl: publicUrl, path, filename: file.name, caption: "" });
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Upload failed.");
+        toast.error(err instanceof Error ? err.message : t("uploadFailed"));
       } finally {
         setBusy(false);
       }
     },
-    [removeStaged],
+    [removeStaged, t],
   );
 
   const startRecording = useCallback(async () => {
     if (inputsDisabled || busy || recording) return;
     if (!navigator.mediaDevices?.getUserMedia || typeof AudioContext === "undefined") {
-      toast.error("Este navegador no soporta grabación de voz.");
+      toast.error(t("voiceUnsupported"));
       return;
     }
     try {
@@ -478,9 +480,9 @@ export function MessageComposer({
     } catch {
       void recorderRef.current?.stop().catch(() => {});
       recorderRef.current = null;
-      toast.error("Acceso al micrófono denegado o no disponible.");
+      toast.error(t("micDenied"));
     }
-  }, [inputsDisabled, busy, recording, finalizeRecording]);
+  }, [inputsDisabled, busy, recording, finalizeRecording, t]);
 
   const stopRecording = useCallback(() => {
     clearTimer();
@@ -701,7 +703,7 @@ export function MessageComposer({
             variant="ghost"
             size="sm"
             canAct={!readOnly}
-            gateReason="send messages"
+            gateReason="sendMessages"
             title={readOnly ? undefined : t("sendTemplate")}
             className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-foreground"
             onClick={onOpenTemplates}
@@ -713,7 +715,7 @@ export function MessageComposer({
             variant="ghost"
             size="sm"
             canAct={!readOnly}
-            gateReason="send messages"
+            gateReason="sendMessages"
             disabled={drafting}
             title={readOnly ? undefined : t("draftWithAI")}
             className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-primary"
@@ -753,7 +755,7 @@ export function MessageComposer({
           <GatedButton
             size="sm"
             canAct={!readOnly}
-            gateReason="send messages"
+            gateReason="sendMessages"
             disabled={!text.trim() || sessionExpired || sending}
             onClick={handleSend}
             className="h-9 w-9 shrink-0 bg-primary p-0 hover:bg-primary/90 disabled:opacity-40"
@@ -838,6 +840,8 @@ function MediaDraftPreview({
   onSend: () => void;
   t: ReturnType<typeof useTranslations>;
 }) {
+  // Draft lives in chat-media (possibly private): preview via signed URL.
+  const previewSrc = useResolvedMediaUrl(draft.mediaUrl) ?? undefined;
   return (
     <div className="rounded-xl border border-border bg-muted/40 p-3">
       <div className="flex items-start gap-3">
@@ -845,16 +849,16 @@ function MediaDraftPreview({
           {draft.kind === "image" && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={draft.mediaUrl}
+              src={previewSrc}
               alt={draft.filename}
               className="max-h-40 rounded-lg object-cover"
             />
           )}
           {draft.kind === "video" && (
-            <video src={draft.mediaUrl} controls className="max-h-40 rounded-lg" />
+            <video src={previewSrc} controls className="max-h-40 rounded-lg" />
           )}
           {draft.kind === "audio" && (
-            <audio src={draft.mediaUrl} controls className="w-full" />
+            <audio src={previewSrc} controls className="w-full" />
           )}
           {draft.kind === "document" && (
             <div className="flex items-center gap-2 text-sm text-foreground">
@@ -892,7 +896,7 @@ function MediaDraftPreview({
         <GatedButton
           size="sm"
           canAct={!readOnly}
-          gateReason="send messages"
+          gateReason="sendMessages"
           disabled={busy}
           onClick={onSend}
           className={cn(

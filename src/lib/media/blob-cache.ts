@@ -23,6 +23,12 @@
  * object URL keeps its blob's data alive by itself.
  */
 
+import { createClient } from "@/lib/supabase/client";
+import {
+  parseChatMediaUrl,
+  resolveChatMediaUrl,
+} from "@/lib/storage/private-media";
+
 /** Prefix of the auth-gated proxy — these need a credentialed fetch. */
 const PROXY_PREFIX = "/api/whatsapp/media/";
 
@@ -91,7 +97,12 @@ export async function loadMediaBlob(
   fetchImpl: MediaFetch = defaultFetch,
 ): Promise<Blob> {
   if (!isProxiedMediaUrl(url)) {
-    const res = await fetchImpl(url);
+    // chat-media may be a private bucket: fetch through a signed URL.
+    // Falls back to the original URL, so a public bucket still works.
+    const target = parseChatMediaUrl(url)
+      ? await resolveChatMediaUrl(createClient(), url)
+      : url;
+    const res = await fetchImpl(target);
     if (!res.ok) throw new MediaResponseError(res.status);
     return res.blob();
   }

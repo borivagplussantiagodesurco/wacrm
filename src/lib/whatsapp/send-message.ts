@@ -19,6 +19,11 @@
 // without duplicating ~250 lines of Meta plumbing.
 // ============================================================
 
+import type { SendTimeParams } from '@/lib/whatsapp/template-send-builder';
+import {
+  signChatMediaUrl,
+  signTemplateHeaderParams,
+} from '@/lib/storage/private-media';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import {
@@ -345,7 +350,12 @@ export async function sendMessageToConversation(
         templateName: templateName!,
         language: sendLanguage,
         template: templateRow ?? undefined,
-        messageParams: templateMessageParams ?? undefined,
+        // chat-media is a private bucket: the header link Meta fetches must be signed.
+        messageParams: await signTemplateHeaderParams(
+          supabaseAdmin,
+          templateRow,
+          templateMessageParams as SendTimeParams | undefined,
+        ),
         params: templateParams || [],
         contextMessageId,
       });
@@ -357,7 +367,8 @@ export async function sendMessageToConversation(
         accessToken,
         to: phone,
         kind: messageType as MediaKind,
-        link: mediaUrl!,
+        // Canonical URL stays in the DB; Meta gets a short-lived signed one.
+        link: await signChatMediaUrl(supabaseAdmin, mediaUrl!, 900),
         caption: contentText || undefined,
         filename: filename || undefined,
         contextMessageId,

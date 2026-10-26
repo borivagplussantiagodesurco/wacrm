@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { __resetChatMediaUrlCache } from "@/lib/storage/private-media";
 import {
   __resetMediaBlobCache,
   isProxiedMediaUrl,
@@ -6,6 +7,11 @@ import {
   MediaResponseError,
   type MediaFetch,
 } from "./blob-cache";
+
+const createSignedUrl = vi.fn();
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: () => ({ storage: { from: () => ({ createSignedUrl }) } }),
+}));
 
 const PROXY = "/api/whatsapp/media/";
 const BUCKET = "https://x.supabase.co/storage/v1/object/public/chat-media/a/1-p.png";
@@ -26,7 +32,14 @@ function trackingFetch(): MediaFetch & { calls: string[] } {
 }
 
 beforeEach(() => {
+  // El CI define su propio NEXT_PUBLIC_SUPABASE_URL: se fija el origen que
+  // usan las URLs de este archivo para que el resultado no dependa del entorno.
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://x.supabase.co");
   __resetMediaBlobCache();
+  __resetChatMediaUrlCache();
+  createSignedUrl.mockReset();
+  // Default: signing unavailable → falls back to the original URL.
+  createSignedUrl.mockResolvedValue({ data: null, error: { message: "no" } });
 });
 
 describe("isProxiedMediaUrl", () => {
@@ -67,6 +80,16 @@ describe("loadMediaBlob", () => {
     await loadMediaBlob(BUCKET, fetchImpl);
 
     expect(fetchImpl.calls).toEqual([BUCKET, BUCKET]);
+  });
+
+  it("fetches chat-media through a signed URL when signing works", async () => {
+    createSignedUrl.mockResolvedValue({
+      data: { signedUrl: "https://x.supabase.co/signed?token=t" },
+      error: null,
+    });
+    const fetchImpl = trackingFetch();
+    await loadMediaBlob(BUCKET, fetchImpl);
+    expect(fetchImpl.calls).toEqual(["https://x.supabase.co/signed?token=t"]);
   });
 
   it("evicts the least-recently-used entry past the cap", async () => {

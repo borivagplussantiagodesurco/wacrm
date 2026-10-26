@@ -1,0 +1,62 @@
+name: Backup base de datos
+
+# Respaldo diario cifrado de Postgres (esquemas public y auth). El plan gratis
+# de Supabase NO incluye backups descargables.
+#
+# Requiere (Settings → Secrets and variables → Actions):
+#   - SUPABASE_DB_URL     cadena de conexión del pooler (Session pooler, puerto 5432)
+#   - BACKUP_PASSPHRASE   frase larga para cifrar el archivo (guárdala también
+#                         en un gestor de contraseñas: sin ella no se puede restaurar)
+#
+# El archivo queda como artefacto privado del repositorio durante 14 días.
+# Restaurar: descargar, `gpg -d backup.sql.gz.gpg | gunzip | psql <destino>`.
+# Probar una restauración en un proyecto de prueba cada trimestre.
+
+on:
+  schedule:
+    - cron: '30 7 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  dump:
+    name: pg_dump cifrado
+    runs-on: ubuntu-latest
+    steps:
+      - name: Volcar y cifrar
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$DB_URL" ] || [ -z "$PASSPHRASE" ]; then
+            echo "::error::Faltan los secretos SUPABASE_DB_URL y/o BACKUP_PASSPHRASE"
+            exit 1
+          fi
+          docker run --rm postgres:17 pg_dump "$DB_URL" \
+            --no-owner --no-privileges --schema=public --schema=auth \
+            | gzip -9 \
+            | gpg --batch --yes --pinentry-mode loopback --symmetric \
+                  --cipher-algo AES256 --passphrase "$PASSPHRASE" \
+                  -o backup.sql.gz.gpg
+          test -s backup.sql.gz.gpg
+          ls -l backup.sql.gz.gpg
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-${{ github.run_id }}
+          path: backup.sql.gz.gpg
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Abrir issue si falló
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "${{ github.repository }}" \
+            --title "Backup de la base falló ($(date -u +%F))" \
+            --body "Revisa la ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -24,6 +24,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useMediaBlobUrl } from "@/hooks/use-media-blob-url";
+import { useResolvedMediaUrl } from "@/hooks/use-resolved-media-url";
 import { downloadMediaMessage } from "@/lib/media/download";
 import { galleryIndexOf, type MediaGalleryItem } from "@/lib/media/gallery";
 
@@ -62,6 +63,8 @@ export function MediaLightbox({
 
   const index = galleryIndexOf(items, activeId);
   const item = index >= 0 ? items[index] : null;
+  // chat-media may sit in a private bucket → signed URL for open/stream.
+  const signedUrl = useResolvedMediaUrl(item?.url);
 
   // Zoom is tracked by id, not a boolean, so moving to the next photo shows
   // it fit-to-screen without an effect resetting the flag after the fact.
@@ -148,7 +151,7 @@ export function MediaLightbox({
               />
             )}
             <a
-              href={item.url}
+              href={signedUrl ?? undefined}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t("openOriginal")}
@@ -177,7 +180,7 @@ export function MediaLightbox({
           ) : (
             <video
               // Plain URL, never a blob — the player should stream.
-              src={item.url}
+              src={signedUrl ?? undefined}
               controls
               preload="metadata"
               className={cn(MEDIA_MAX_HEIGHT, "max-w-full rounded-lg")}

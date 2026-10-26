@@ -19,6 +19,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import { sendTemplateMessage } from '@/lib/whatsapp/meta-api';
+import { supabaseAdmin } from '@/lib/automations/admin-client';
+import { signTemplateHeaderParams } from '@/lib/storage/private-media';
 import { decrypt } from '@/lib/whatsapp/encryption';
 import {
   sanitizePhoneForMeta,
@@ -273,6 +275,11 @@ export async function deliverBroadcast(
           templateName: plan.templateName,
           language: plan.templateLanguage,
           template: plan.templateRow ?? undefined,
+          messageParams: await signTemplateHeaderParams(
+            supabaseAdmin,
+            plan.templateRow,
+            undefined,
+          ),
           params: recipient.params,
         });
         sentMessageId = result.messageId;

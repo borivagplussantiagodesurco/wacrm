@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireRole, toErrorResponse } from '@/lib/auth/account'
 import { supabaseAdmin } from '@/lib/flows/admin-client'
 import { validateFlowForActivation } from '@/lib/flows/validate'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 /**
  * POST /api/flows/[id]/activate
@@ -113,7 +114,7 @@ export async function POST(
     .select()
     .maybeSingle()
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return dbErrorResponse(error)
   }
   return NextResponse.json({ flow: updated })
 }

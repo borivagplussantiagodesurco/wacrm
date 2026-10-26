@@ -1,5 +1,6 @@
 'use client';
 
+import { useResolvedMediaUrl } from '@/hooks/use-resolved-media-url';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -135,6 +136,7 @@ export function TemplateManager() {
   const [submitting, setSubmitting] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [form, setForm] = useState<TemplateFormData>(emptyForm);
+  const headerPreviewSrc = useResolvedMediaUrl(form.header_media_url);
   // Non-null when the dialog is editing an existing row — switches the
   // submit handler from POST /submit to PATCH /[id] and changes the
   // dialog title + CTA. Set to the template id to pre-fill from a row.
@@ -308,7 +310,7 @@ export function TemplateManager() {
       const res = await fetch('/api/whatsapp/templates/sync', { method: 'POST' });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data?.error || `Sync failed (HTTP ${res.status})`);
+        throw new Error(data?.error || t('syncFailedHttp', { status: res.status }));
       }
       toast.success(
         t('toastSyncCount', { total: data.total }) +
@@ -356,7 +358,7 @@ export function TemplateManager() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data?.error || `Delete failed (HTTP ${res.status})`);
+        throw new Error(data?.error || t('deleteFailedHttp', { status: res.status }));
       }
       toast.success(t('toastDeleteSuccess'));
       setTemplates((prev) => prev.filter((t) => t.id !== target.id));
@@ -547,7 +549,7 @@ export function TemplateManager() {
                                 ? 'text-yellow-400'
                                 : 'text-red-400'
                           }`}
-                          title="Meta quality score"
+                          title={t('qualityScoreTitle')}
                         >
                           {template.quality_score}
                         </span>
@@ -775,7 +777,7 @@ export function TemplateManager() {
                 <div className="space-y-2 mt-2">
                   <Input
                     id="template-header-text"
-                    aria-label="Header text"
+                    aria-label={t('headerTextAria')}
                     placeholder={t.raw('headerTextPlaceholder')}
                     value={form.header_content}
                     onChange={(e) =>
@@ -844,8 +846,8 @@ export function TemplateManager() {
                   {form.header_format === 'image' && form.header_media_url && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={form.header_media_url}
-                      alt="Header sample"
+                      src={headerPreviewSrc ?? undefined}
+                      alt={t('headerSampleAlt')}
                       className="max-h-28 rounded-md border border-border object-contain"
                     />
                   )}

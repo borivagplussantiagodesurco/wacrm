@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireRole, toErrorResponse } from '@/lib/auth/account'
 import { supabaseAdmin } from '@/lib/flows/admin-client'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 /**
  * GET   /api/flows/[id]  — fetch one flow with its nodes.
@@ -207,7 +208,7 @@ export async function DELETE(
   // free up the contact for new triggers immediately.
   const { error } = await supabaseAdmin().from('flows').delete().eq('id', id)
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return dbErrorResponse(error)
   }
   return NextResponse.json({ ok: true })
 }

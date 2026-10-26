@@ -12,6 +12,9 @@ import {
   Bot,
   Crown,
   GitBranch,
+  ListChecks,
+  Package,
+  Radar as RadarIcon,
   LayoutDashboard,
   LogOut,
   MessageSquare,
@@ -95,6 +98,9 @@ const navItems: NavItem[] = [
   { href: "/notifications", labelKey: "notifications", icon: Bell },
   { href: "/contacts", labelKey: "contacts", icon: Users },
   { href: "/pipelines", labelKey: "pipelines", icon: GitBranch },
+  { href: "/radar", labelKey: "radar", icon: RadarIcon },
+  { href: "/tasks", labelKey: "tasks", icon: ListChecks },
+  { href: "/catalog", labelKey: "catalog", icon: Package },
   { href: "/broadcasts", labelKey: "broadcasts", icon: Radio },
   { href: "/automations", labelKey: "automations", icon: Zap },
   { href: "/flows", labelKey: "flows", icon: Workflow, beta: true },
@@ -182,7 +188,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
           // Desktop: static, always visible — reset all the mobile framing.
           "lg:static lg:z-0 lg:w-60 lg:translate-x-0 lg:transition-none",
         )}
-        aria-label="Primary"
+        aria-label={t("primaryNav")}
       >
         {/* Logo row. On mobile we put a close button here; on desktop the
             close button is hidden since the sidebar is always-visible. */}

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireRole, toErrorResponse } from '@/lib/auth/account'
 import { supabaseAdmin } from '@/lib/flows/admin-client'
 import { getFlowTemplate } from '@/lib/flows/templates'
+import { dbErrorResponse } from '@/lib/api/db-error'
 
 /**
  * GET /api/flows — list the caller's flows.
@@ -40,7 +41,7 @@ export async function GET() {
     .select('*')
     .order('created_at', { ascending: false })
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return dbErrorResponse(error)
   }
   return NextResponse.json({ flows: data ?? [] })
 }

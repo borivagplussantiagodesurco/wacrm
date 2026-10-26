@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { useDateLocale } from "@/hooks/use-date-locale";
 import type { Notification } from "@/types";
 import { Bell, CheckCheck, Loader2, UserPlus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -18,6 +20,8 @@ const TYPE_ICON: Record<Notification["type"], typeof Bell> = {
 };
 
 export default function NotificationsPage() {
+  const t = useTranslations("Notifications");
+  const dateLocale = useDateLocale();
   const router = useRouter();
   const { accountId } = useAuth();
   const [notifications, setNotifications] = useState<Notification[] | null>(
@@ -104,11 +108,11 @@ export default function NotificationsPage() {
         .eq("id", id)
         .is("read_at", null);
       if (updateErr) {
-        toast.error("No se pudo marcar la notificación como leída");
+        toast.error(t("markReadError"));
         load();
       }
     },
-    [load],
+    [load, t],
   );
 
   const handleClick = useCallback(
@@ -137,17 +141,17 @@ export default function NotificationsPage() {
       .is("read_at", null);
     setMarkingAll(false);
     if (updateErr) {
-      toast.error("No se pudo marcar todo como leído");
+      toast.error(t("markAllError"));
       load();
     }
-  }, [unreadIds.length, load]);
+  }, [unreadIds.length, load, t]);
 
   if (error) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-2">
         <p className="text-sm text-destructive">{error}</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Reintentar
+          {t("retry")}
         </Button>
       </div>
     );
@@ -165,9 +169,9 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Notificaciones</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Aquí aparecen las conversaciones que otros compañeros te asignan.
+            {t("subtitle")}
           </p>
         </div>
         <Button
@@ -181,7 +185,7 @@ export default function NotificationsPage() {
           ) : (
             <CheckCheck className="h-4 w-4" />
           )}
-          Marcar todo como leído
+          {t("markAllRead")}
         </Button>
       </div>
 
@@ -191,11 +195,10 @@ export default function NotificationsPage() {
             <Bell className="h-6 w-6 text-primary" />
           </div>
           <p className="mt-3 text-sm font-medium text-foreground">
-            Aún no hay notificaciones
+            {t("emptyTitle")}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Verás una alerta aquí cuando alguien te asigne una
-            conversación.
+            {t("emptyHint")}
           </p>
         </div>
       ) : (
@@ -241,7 +244,7 @@ export default function NotificationsPage() {
                       </span>
                       {isUnread && (
                         <span
-                          aria-label="Sin leer"
+                          aria-label={t("unread")}
                           className="h-2 w-2 flex-shrink-0 rounded-full bg-primary"
                         />
                       )}
@@ -254,6 +257,7 @@ export default function NotificationsPage() {
                     <p className="mt-1 text-[11px] text-muted-foreground/70">
                       {formatDistanceToNow(new Date(n.created_at), {
                         addSuffix: true,
+                        locale: dateLocale,
                       })}
                     </p>
                   </div>

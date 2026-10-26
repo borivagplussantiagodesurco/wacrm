@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ export default function SignupPage() {
 }
 
 function SignupPageInner() {
+  const t = useTranslations("Auth.signup");
   const searchParams = useSearchParams();
   // When the user lands here from `/join/<token>` we carry the
   // invite token in the query so it survives the signup → email
@@ -49,12 +51,12 @@ function SignupPageInner() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
+      setError(t("passwordMismatch"));
       return;
     }
 
     if (password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres");
+      setError(t("passwordTooShort"));
       return;
     }
 
@@ -98,12 +100,13 @@ function SignupPageInner() {
               <CheckCircle className="h-6 w-6 text-primary" />
             </div>
             <CardTitle className="text-xl text-foreground">
-              Revisa tu correo
+              {t("checkEmailTitle")}
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Te enviamos un link de confirmación a{" "}
-              <span className="text-foreground">{email}</span>. Revisa tu
-              bandeja de entrada y haz clic en el link para verificar tu cuenta.
+              {t.rich("checkEmailDesc", {
+                email,
+                strong: (chunks) => <span className="text-foreground">{chunks}</span>,
+              })}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -118,7 +121,7 @@ function SignupPageInner() {
                 variant="outline"
                 className="w-full border-border text-muted-foreground hover:bg-muted hover:text-foreground"
               >
-                Volver a iniciar sesión
+                {t("backToLogin")}
               </Button>
             </Link>
           </CardContent>
@@ -139,12 +142,12 @@ function SignupPageInner() {
             )}
           </div>
           <CardTitle className="text-xl text-foreground">
-            {inviteToken ? "Crear cuenta y unirme" : "Crear cuenta"}
+            {inviteToken ? t("titleInvite") : t("title")}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
             {inviteToken
-              ? "Verifica tu correo y luego acepta la invitación para unirte a tu equipo."
-              : "Empieza con la plantilla de CRM para WhatsApp"}
+              ? t("descInvite")
+              : t("desc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -157,12 +160,12 @@ function SignupPageInner() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="fullName" className="text-muted-foreground">
-                Nombre completo
+                {t("fullName")}
               </Label>
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Juan Pérez"
+                placeholder={t("namePlaceholder")}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -172,12 +175,12 @@ function SignupPageInner() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-muted-foreground">
-                Correo electrónico
+                {t("email")}
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="tu@ejemplo.com"
+                placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -187,12 +190,12 @@ function SignupPageInner() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-muted-foreground">
-                Contraseña
+                {t("password")}
               </Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="Al menos 6 caracteres"
+                placeholder={t("passwordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -202,12 +205,12 @@ function SignupPageInner() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="confirmPassword" className="text-muted-foreground">
-                Confirmar contraseña
+                {t("confirmPassword")}
               </Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder="Repite tu contraseña"
+                placeholder={t("confirmPlaceholder")}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -220,12 +223,12 @@ function SignupPageInner() {
               disabled={loading}
               className="mt-2 h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
-              {loading ? "Creando cuenta..." : "Crear cuenta"}
+              {loading ? t("submitting") : t("submit")}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            ¿Ya tienes una cuenta?{" "}
+            {t("haveAccount")}{" "}
             <Link
               href={
                 inviteToken
@@ -234,7 +237,7 @@ function SignupPageInner() {
               }
               className="text-primary hover:text-primary/80"
             >
-              Iniciar sesión
+              {t("signIn")}
             </Link>
           </p>
         </CardContent>

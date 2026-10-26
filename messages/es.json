@@ -15,7 +15,7 @@
     "createAccount": "Crear cuenta"
   },
   "Sidebar": {
-    "title": "Plantilla de CRM para WhatsApp",
+    "title": "CRM para WhatsApp",
     "dashboard": "Panel",
     "inbox": "Bandeja de entrada",
     "notifications": "Notificaciones",
@@ -38,7 +38,11 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configuración",
-    "menuSignOut": "Cerrar sesión"
+    "menuSignOut": "Cerrar sesión",
+    "radar": "Radar",
+    "tasks": "Tareas",
+    "catalog": "Catálogo",
+    "primaryNav": "Navegación principal"
   },
   "Header": {
     "dashboard": "Panel",
@@ -55,7 +59,10 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configuración",
-    "menuSignOut": "Cerrar sesión"
+    "menuSignOut": "Cerrar sesión",
+    "radar": "Radar",
+    "tasks": "Tareas",
+    "catalog": "Catálogo"
   },
   "ModeToggle": {
     "switchMode": "Cambiar a modo {mode}"
@@ -126,7 +133,8 @@
       "thisWeek": "Esta semana:",
       "lastWeek": "Semana pasada:",
       "noReplies": "Aún no hay respuestas registradas",
-      "noRepliesHint": "Este gráfico se completa a medida que respondes mensajes de clientes."
+      "noRepliesHint": "Este gráfico se completa a medida que respondes mensajes de clientes.",
+      "avgMinutes": "Minutos promedio"
     },
     "emptyState": {
       "title": "Todavía no hay suficientes datos"
@@ -173,7 +181,13 @@
       "selectConversation": "Selecciona una conversación",
       "selectConversationHint": "Elige una conversación de la izquierda para empezar a escribir",
       "today": "Hoy",
-      "yesterday": "Ayer"
+      "yesterday": "Ayer",
+      "sendFailed": "No se pudo enviar: {reason}",
+      "sendTemplateFailed": "No se pudo enviar la plantilla: {reason}",
+      "reactionFailed": "No se pudo enviar la reacción: {reason}",
+      "networkError": "error de red",
+      "waitForSend": "Espera a que el mensaje termine de enviarse",
+      "assignFailed": "No se pudo actualizar la asignación"
     },
     "sessionTimer": {
       "expired": "Vencida",
@@ -209,7 +223,16 @@
       "send": "Enviar",
       "quickReplyNamePrompt": "Nombra esta respuesta rápida:",
       "quickReplySaved": "Guardada como respuesta rápida.",
-      "quickReplySaveError": "No se pudo guardar la respuesta rápida."
+      "quickReplySaveError": "No se pudo guardar la respuesta rápida.",
+      "aiNotConfigured": "La IA aún no está configurada: actívala en Configuración → Asistente de IA.",
+      "draftFailed": "No se pudo redactar un borrador de respuesta.",
+      "aiEmpty": "El asistente no devolvió una respuesta.",
+      "aiUnreachable": "No se pudo contactar al asistente de IA.",
+      "fileTooLarge": "El archivo pesa {size} MB y el límite es {limit} MB.",
+      "uploadFailed": "No se pudo subir el archivo.",
+      "recordingTooLong": "La grabación es muy larga (más de 16 MB).",
+      "voiceUnsupported": "Este navegador no admite la grabación de voz.",
+      "micDenied": "Se denegó el acceso al micrófono o no está disponible."
     },
     "bubble": {
       "photo": "Foto",
@@ -277,7 +300,8 @@
       "finalUrl": "URL final: {url}",
       "back": "Atrás",
       "cancel": "Cancelar",
-      "send": "Enviar plantilla"
+      "send": "Enviar plantilla",
+      "urlButtonLabel": "Botón de URL «{text}»: valor para {placeholder}"
     },
     "sidebar": {
       "contactInfo": "Información de contacto",
@@ -341,7 +365,9 @@
       "toastFailedDelete": "Error al eliminar el contacto",
       "toastDeleted": "Contacto eliminado",
       "toastBulkFailedDelete": "Error al eliminar los contactos",
-      "toastBulkDeleted": "{count} contactos eliminados"
+      "toastBulkDeleted": "{count} contactos eliminados",
+      "filterByTag": "Filtrar por {name}",
+      "selectAllOnPage": "Seleccionar todos los contactos de esta página"
     },
     "form": {
       "addTitle": "Agregar contacto",
@@ -374,7 +400,9 @@
       "dupSimilar": "Ya existe un contacto con un número muy similar.",
       "loadingTags": "Cargando etiquetas...",
       "noTagsAvailable": "No hay etiquetas disponibles. Crea etiquetas en Configuración.",
-      "phoneRequired": "El número de teléfono es obligatorio"
+      "phoneRequired": "El número de teléfono es obligatorio",
+      "notAuthenticated": "No has iniciado sesión",
+      "noAccount": "Tu perfil no está vinculado a ninguna cuenta."
     },
     "detailView": {
       "tabs": {
@@ -384,9 +412,9 @@
         "custom": "Campos personalizados",
         "deals": "Negocios",
         "tags": "Etiquetas",
-      "noTags": "Sin etiquetas",
-      "noDeals": "Sin negocios",
-      "addNotePlaceholder": "Agregar una nota..."
+        "noTags": "Sin etiquetas",
+        "noDeals": "Sin negocios",
+        "addNotePlaceholder": "Agregar una nota..."
       },
       "actions": {
         "edit": "Editar",
@@ -436,7 +464,8 @@
       "toastCustomFieldsSaved": "Campos personalizados guardados",
       "toastCustomFieldsFailed": "Error al guardar los campos personalizados",
       "toastTemplateSent": "Plantilla \"{name}\" enviada",
-      "toastTemplateFailed": "Error al enviar la plantilla: {reason}"
+      "toastTemplateFailed": "Error al enviar la plantilla: {reason}",
+      "networkError": "error de red"
     },
     "importModal": {
       "title": "Importar contactos",
@@ -479,7 +508,9 @@
       "toastSkipped_plural": "{count} duplicados omitidos",
       "toastFailed": "{count} contacto no se pudo importar",
       "toastFailed_plural": "{count} contactos no se pudieron importar",
-      "toastError": "Error en la importación"
+      "toastError": "Error en la importación",
+      "notAuthenticated": "No has iniciado sesión",
+      "noAccount": "Tu perfil no está vinculado a ninguna cuenta."
     },
     "customFields": {
       "title": "Campos personalizados",
@@ -595,7 +626,8 @@
       "toastMoveOrDeleteDeals": "Primero mueve o elimina los negocios de esta etapa",
       "toastFailedDeleteStage": "Error al eliminar la etapa",
       "toastFailedDeletePipeline": "Error al eliminar el pipeline",
-      "toastDeleted": "Pipeline eliminado"
+      "toastDeleted": "Pipeline eliminado",
+      "pickColor": "Elegir el color {color}"
     },
     "analytics": {
       "totalDeals": "Total de negocios",
@@ -630,7 +662,8 @@
         "date": "Fecha"
       },
       "errorLoad": "Error al cargar las difusiones",
-      "retry": "Reintentar"
+      "retry": "Reintentar",
+      "inProgress": "Difusión en curso"
     },
     "status": {
       "draft": "Borrador",
@@ -690,7 +723,8 @@
       "retryFailed": "Reintentar fallidos ({count})",
       "toastResumeStarted": "Enviando {count} destinatarios en segundo plano.",
       "toastResumeStartedCapped": "Enviando {count} destinatarios en segundo plano. Quedan {remaining} que necesitarán otra ejecución.",
-      "toastResumeFailed": "No se pudo reanudar: {error}"
+      "toastResumeFailed": "No se pudo reanudar: {error}",
+      "unknownError": "Error desconocido"
     },
     "new": {
       "title": "Nueva difusión",
@@ -705,7 +739,8 @@
       "toastNotSignedIn": "No has iniciado sesión.",
       "toastNotLinked": "Tu perfil no está vinculado a ninguna cuenta.",
       "toastFailedDraft": "Error al guardar el borrador: {error}",
-      "toastDraftSaved": "Borrador guardado"
+      "toastDraftSaved": "Borrador guardado",
+      "broadcastFailed": "No se pudo enviar la difusión"
     },
     "wizard": {
       "next": "Siguiente",
@@ -751,7 +786,11 @@
         "errorLoadTags": "Error al cargar las etiquetas",
         "errorLoadFields": "Error al cargar los campos personalizados",
         "errorCsvParse": "No se pudo procesar el archivo CSV.",
-        "errorCsvMissingPhone": "El CSV debe tener una columna 'phone'."
+        "errorCsvMissingPhone": "El CSV debe tener una columna 'phone'.",
+        "summary": "Resumen de la audiencia",
+        "calculating": "Calculando…",
+        "estimatedRecipients": "destinatarios estimados",
+        "selectTypeHint": "Elige un tipo de audiencia para ver la estimación."
       },
       "personalize": {
         "title": "Personalizar variables",
@@ -778,7 +817,13 @@
           "name": "Nombre",
           "phone": "Teléfono",
           "email": "Correo"
-        }
+        },
+        "headerPreviewAlt": "Vista previa del encabezado",
+        "mediaUrlRequired": "Se necesita una URL del archivo para enviar esta plantilla.",
+        "mediaUrlInvalid": "Ingresa una URL http(s) válida.",
+        "staticValuePlaceholder": "Ingresa un valor...",
+        "loadingFields": "Cargando…",
+        "noCustomFields": "No hay campos personalizados"
       },
       "scheduleSend": {
         "title": "Revisar y enviar",
@@ -799,8 +844,27 @@
         "sending": "Enviando...",
         "preparing": "Preparando...",
         "progressDesc": "Procesando {current} de {total} destinatarios...",
-        "toastFailedPreview": "Error al cargar los datos de vista previa"
+        "toastFailedPreview": "Error al cargar los datos de vista previa",
+        "estimatedReach": "Alcance estimado",
+        "language": "Idioma",
+        "confirmTitle": "Confirmar difusión",
+        "confirmBody": "Estás a punto de enviar esta difusión a <b>{count}</b> contactos con la plantilla <b>{template}</b>. Esta acción no se puede deshacer."
       }
+    },
+    "sending": {
+      "fetchContactsFailed": "No se pudieron obtener los contactos: {error}",
+      "fetchTagsFailed": "No se pudieron obtener las etiquetas de los contactos: {error}",
+      "notSignedIn": "No has iniciado sesión.",
+      "noAccount": "Tu perfil no está vinculado a ninguna cuenta.",
+      "csvLookupFailed": "No se pudieron buscar los contactos del CSV: {error}",
+      "csvCreateFailed": "No se pudieron crear los contactos del CSV: {error}",
+      "customFieldFilterFailed": "Falló el filtro por campo personalizado: {error}",
+      "noContacts": "No se encontraron contactos para esta audiencia.",
+      "createFailed": "No se pudo crear la difusión: {error}",
+      "unknownError": "error desconocido",
+      "insertBatchFailed": "No se pudo guardar el lote {batch} de destinatarios: {error}",
+      "fetchRecipientsFailed": "No se pudieron obtener los destinatarios de la difusión",
+      "apiFailed": "Falló la solicitud de envío de la difusión"
     }
   },
   "Automations": {
@@ -832,7 +896,9 @@
         "updateError": "Error al actualizar",
         "duplicateError": "Error al duplicar",
         "deleteError": "Error al eliminar"
-      }
+      },
+      "loadFailed": "No se pudieron cargar las automatizaciones",
+      "openMenu": "Abrir menú"
     },
     "edit": {
       "loading": "Cargando...",
@@ -1011,7 +1077,10 @@
         "matchWordHint": "Coincide con la palabra clave solo como palabra independiente, así que \"k\" ya no se dispara con \"gracias\". Ideal para palabras clave cortas en idiomas separados por espacios; usa Contiene para idiomas escritos sin espacios.",
         "matchExact": "Exacta",
         "closeConversationHint": "Establece el estado de la conversación como \"cerrada\". No requiere configuración."
-      }
+      },
+      "moveUp": "Subir",
+      "moveDown": "Bajar",
+      "schedulePlaceholder": "Expresión cron o HH:mm"
     }
   },
   "Flows": {
@@ -1155,7 +1224,15 @@
         "filenamePlaceholder": "factura.pdf",
         "advanceAfterSending": "Después de enviar, avanzar a",
         "pickNextNode": "Elige un nodo siguiente…",
-        "none": "— Ninguno —"
+        "none": "— Ninguno —",
+        "removeSection": "Quitar sección",
+        "fieldName": "Nombre",
+        "fieldEmail": "Correo electrónico",
+        "fieldPhone": "Teléfono",
+        "fieldCompany": "Empresa",
+        "fileTooLarge": "El archivo pesa {size} MB y el límite es {limit} MB.",
+        "fileUploaded": "Archivo subido.",
+        "uploadFailed": "No se pudo subir el archivo."
       },
       "categories": {
         "messaging": "Mensajería",
@@ -1203,7 +1280,8 @@
           "label": "Fin",
           "blurb": "Termina el flujo"
         }
-      }
+      },
+      "editorView": "Vista del editor"
     },
     "validation": {
       "noIssues": "Sin problemas. Listo para activar.",
@@ -1215,7 +1293,11 @@
       "fixIssues": "Corrige los problemas de abajo antes de activar.",
       "statusActivated": "Flujo activado.",
       "statusArchived": "Archivado.",
-      "statusDraft": "Guardado como borrador."
+      "statusDraft": "Guardado como borrador.",
+      "saveFailed": "No se pudo guardar el flujo.",
+      "statusFailed": "No se pudo actualizar el estado del flujo.",
+      "deleteFailed": "No se pudo eliminar el flujo.",
+      "deleteConfirm": "¿Eliminar «{name}»? Cualquier ejecución activa terminará de inmediato. No se puede deshacer."
     },
     "summary": {
       "options": "{count} {count, plural, =1 {opción} other {opciones}}",
@@ -1234,6 +1316,20 @@
       "modeRemove": "Quitar",
       "tagPicked": "{mode} etiqueta {tag}…",
       "tagNone": "{mode} etiqueta (ninguna elegida)"
+    },
+    "header": {
+      "backToFlows": "Volver a Flujos",
+      "namePlaceholder": "Nombre del flujo",
+      "unsavedTitle": "Cambios sin guardar: presiona Guardar para conservarlos",
+      "edited": "Editado",
+      "runs": "Ejecuciones",
+      "delete": "Eliminar",
+      "pause": "Pausar",
+      "activate": "Activar",
+      "fixIssues": "Corrige los problemas de abajo antes de activar",
+      "save": "Guardar",
+      "descriptionPlaceholder": "Agrega una breve descripción (interna: los clientes no la ven)",
+      "descriptionLabel": "Descripción del flujo"
     }
   },
   "Settings": {
@@ -1254,7 +1350,9 @@
       "fieldsCount": "{count} {count, plural, =1 {campo personalizado} other {campos personalizados}}",
       "appearance": "modo {mode} · acento {theme}",
       "yourAccount": "Tu cuenta",
-      "loading": "Cargando…"
+      "loading": "Cargando…",
+      "modeLight": "claro",
+      "modeDark": "oscuro"
     },
     "members": {
       "title": "Miembros del equipo",
@@ -1285,7 +1383,15 @@
       "removeDialogDesc": "¿Quitar a <bold>{name}</bold> de la cuenta? Se cerrará su sesión en esta cuenta y se le dará una cuenta personal nueva en su próximo inicio de sesión. Su acceso de inicio de sesión no se elimina.",
       "cancel": "Cancelar",
       "removing": "Quitando...",
-      "removeBtn": "Quitar miembro"
+      "removeBtn": "Quitar miembro",
+      "toasts": {
+        "loadMembersFailed": "No se pudo cargar a los miembros",
+        "loadInvitationsFailed": "No se pudieron cargar las invitaciones",
+        "updateRoleFailed": "No se pudo actualizar el rol",
+        "removeFailed": "No se pudo quitar al miembro",
+        "revokeFailed": "No se pudo revocar la invitación",
+        "serverUnreachable": "No se pudo conectar con el servidor"
+      }
     },
     "invite": {
       "inviteCreated": "Invitación creada",
@@ -1313,7 +1419,12 @@
       "labelTooLong": "La etiqueta debe tener {max} caracteres o menos",
       "copied": "Enlace de invitación copiado",
       "clipboardBlocked": "Portapapeles bloqueado — copia el enlace manualmente",
-      "whatsappMessage": "Únete a {accountName} en wacrm usando este enlace (válido por {expiresInDays} días): {url}"
+      "whatsappMessage": "Únete a {accountName} en Mehys CRM usando este enlace (válido por {expiresInDays} días): {url}",
+      "toasts": {
+        "createFailed": "No se pudo crear la invitación",
+        "serverUnreachable": "No se pudo conectar con el servidor. ¿Quieres intentarlo de nuevo?"
+      },
+      "defaultAccountName": "nuestra cuenta de Mehys CRM"
     },
     "tagsAndFields": {
       "title": "Campos y etiquetas",
@@ -1369,13 +1480,11 @@
       "deleteLocallyAria": "Eliminar plantilla localmente",
       "deleteMetaLocallyTitle": "Eliminar de Meta y localmente",
       "deleteLocallyTitle": "Eliminar localmente",
-
       "dialogEditTitle": "Editar plantilla de mensaje",
       "dialogNewTitle": "Nueva plantilla de mensaje",
       "dialogEditDesc": "Guarda tus cambios para reenviarlos a Meta. El estado volverá a PENDIENTE durante la revisión.",
       "dialogNewDesc": "Crea una plantilla y envíala a Meta para su aprobación. Una vez aprobada, podrás usarla en difusiones y en la bandeja de entrada.",
       "authWarning": "Las plantillas de AUTENTICACIÓN tienen una forma fija de cuerpo + botón OTP que requiere un creador distinto. Créalas por ahora en Meta WhatsApp Manager y usa <bold>Sincronizar desde Meta</bold> para traerlas.",
-
       "templateName": "Nombre de la plantilla",
       "namePlaceholder": "p. ej. confirmacion_pedido",
       "nameFixed": "El nombre queda fijo una vez que la plantilla existe en Meta — crea una nueva plantilla para cambiarlo.",
@@ -1384,7 +1493,6 @@
       "language": "Idioma",
       "langFixed": "El idioma queda fijo una vez que la plantilla existe en Meta.",
       "langHint": "Debe coincidir exactamente con el código en Meta — <code>es_ES</code> y <code>es</code> son distintos.",
-
       "header": "Encabezado",
       "headerNone": "Ninguno",
       "headerText": "Texto",
@@ -1394,7 +1502,6 @@
       "headerTextPlaceholder": "Texto del encabezado (máx. 60 caracteres, {{1}} opcional)",
       "headerSampleAria": "Valor de ejemplo para la variable del encabezado",
       "headerSamplePlaceholder": "Valor de ejemplo para {{1}} (requerido para la revisión de Meta)",
-
       "uploadImage": "Subir imagen",
       "uploadHint": "JPEG o PNG, ≤5 MB",
       "mediaUrlPlaceholder": "https://… (o pega un enlace público de {format})",
@@ -1402,17 +1509,14 @@
       "mediaHint": "Debe ser un enlace HTTPS de acceso público. Meta lo obtiene una vez durante la revisión, así que debe estar activo ~24 horas.",
       "videoHint": " Recomendado: MP4 / 3GPP, ≤16 MB, ≤60 segundos.",
       "documentHint": " Recomendado: PDF, ≤100 MB.",
-
       "bodyText": "Texto del cuerpo",
       "bodyPlaceholder": "Hola {{1}}, tu pedido {{2}} está confirmado.",
       "bodyHint": "Usa {{1}}, {{2}} para variables (deben ser contiguas empezando en {{1}}).",
       "sampleValues": "Valores de ejemplo (Meta los usa para revisar tu plantilla)",
       "sampleAria": "Valor de ejemplo para la variable del cuerpo {var}",
       "samplePlaceholder": "Ejemplo para {var}",
-
       "footer": "Pie de página (opcional)",
       "footerPlaceholder": "Texto de pie de página opcional (máx. 60 caracteres)",
-
       "buttons": "Botones (opcional)",
       "addButton": "Agregar botón",
       "buttonsLimit": "Hasta {max} botones. Los botones de RESPUESTA RÁPIDA deben ir antes que los de URL / teléfono / código de copia.",
@@ -1425,19 +1529,16 @@
       "urlSamplePlaceholder": "Valor de ejemplo para {{1}} (requerido cuando la URL tiene una variable)",
       "phonePlaceholder": "+51987654321",
       "codePlaceholder": "Código de ejemplo (p. ej. VERANO20)",
-
       "cancel": "Cancelar",
       "saving": "Guardando…",
       "submitting": "Enviando…",
       "saveResubmit": "Guardar y reenviar",
       "submitApproval": "Enviar para aprobación",
-
       "deleteDialogTitle": "¿Eliminar plantilla?",
-      "deleteMetaDesc": "\"{name}\" se eliminará de Meta y de wacrm. Las difusiones activas que usan esta plantilla empezarán a fallar en su próximo envío. No se puede deshacer.",
-      "deleteLocalDesc": "\"{name}\" se eliminará de wacrm. Nunca se envió a Meta, así que no se necesita limpieza remota.",
+      "deleteMetaDesc": "\"{name}\" se eliminará de Meta y de Mehys CRM. Las difusiones activas que usan esta plantilla empezarán a fallar en su próximo envío. No se puede deshacer.",
+      "deleteLocalDesc": "\"{name}\" se eliminará de Mehys CRM. Nunca se envió a Meta, así que no se necesita limpieza remota.",
       "deleting": "Eliminando…",
       "delete": "Eliminar",
-
       "toastLoadFailed": "Error al cargar las plantillas",
       "toastSubmitFailed": "Error al enviar",
       "toastSubmitEditSuccess": "Edición enviada — Meta suele revisar en un plazo de 24 horas.",
@@ -1454,7 +1555,12 @@
       "toastInvalidImage": "La imagen del encabezado debe ser JPEG o PNG.",
       "toastImageTooLarge": "La imagen pesa {size} MB — el límite de Meta es 5 MB.",
       "toastUploadSuccess": "Imagen subida.",
-      "toastUploadFailed": "Error al subir."
+      "toastUploadFailed": "Error al subir.",
+      "syncFailedHttp": "Falló la sincronización (HTTP {status})",
+      "deleteFailedHttp": "Falló la eliminación (HTTP {status})",
+      "qualityScoreTitle": "Puntaje de calidad de Meta",
+      "headerTextAria": "Texto del encabezado",
+      "headerSampleAlt": "Muestra del encabezado"
     },
     "roles": {
       "admin": "Administrador",
@@ -1476,7 +1582,7 @@
       "notConnected": "No conectado",
       "connectedDesc": "Tu token de acceso se autentica con Meta. Consulta el estado de registro abajo para saber si los webhooks están realmente conectados.",
       "notConnectedDesc": "Configura tus credenciales de la API de Meta abajo para conectar tu cuenta de WhatsApp Business.",
-      "registered": "Registrado — Meta entregará eventos a wacrm",
+      "registered": "Registrado — Meta entregará eventos a Mehys CRM",
       "notRegistered": "No registrado — Meta no entregará eventos",
       "verifyWithMeta": "Verificar con Meta",
       "subscribedSince": "Suscrito desde el {date}. Haz clic en Verificar con Meta si los eventos dejan de llegar.",
@@ -1500,7 +1606,7 @@
       "twoStepPin": "PIN de verificación en dos pasos",
       "optional": "(opcional)",
       "pinPlaceholder": "PIN de 6 dígitos de Meta WhatsApp Manager",
-      "pinHint": "Solo se necesita para conectar mensajes entrantes en un número de producción. Configúralo en Meta Business Manager → Cuentas de WhatsApp → Números de teléfono → Verificación en dos pasos, y luego pégalo aquí para que wacrm pueda suscribir el número — de lo contrario, Meta enruta los eventos entrantes a la última app que reclamó ese número (el síntoma que afecta a un segundo número bajo una misma WABA compartida). Los números de prueba de Meta no tienen PIN y ya están preregistrados — déjalo en blanco para esos. Dejarlo en blanco también mantiene intacto un registro existente.",
+      "pinHint": "Solo se necesita para conectar mensajes entrantes en un número de producción. Configúralo en Meta Business Manager → Cuentas de WhatsApp → Números de teléfono → Verificación en dos pasos, y luego pégalo aquí para que Mehys CRM pueda suscribir el número — de lo contrario, Meta enruta los eventos entrantes a la última app que reclamó ese número (el síntoma que afecta a un segundo número bajo una misma WABA compartida). Los números de prueba de Meta no tienen PIN y ya están preregistrados — déjalo en blanco para esos. Dejarlo en blanco también mantiene intacto un registro existente.",
       "webhookTitle": "Configuración del webhook",
       "webhookDesc": "Usa esta URL como tu callback de webhook en el panel de apps de Meta.",
       "webhookUrl": "URL de callback del webhook",
@@ -1536,7 +1642,31 @@
       "step4_3": "Pega la <strong class=\"text-foreground\">URL de callback del webhook</strong> de arriba",
       "step4_4": "Ingresa el mismo <strong class=\"text-foreground\">token de verificación</strong> que configuraste aquí",
       "step4_5": "Suscríbete al campo de webhook \"messages\"",
-      "metaDocs": "Documentación de la API de WhatsApp de Meta"
+      "metaDocs": "Documentación de la API de WhatsApp de Meta",
+      "toasts": {
+        "loadFailed": "No se pudo cargar la configuración de WhatsApp",
+        "phoneIdRequired": "El ID del número de teléfono es obligatorio",
+        "tokenRequired": "El token de acceso es obligatorio para la configuración inicial",
+        "tokenReenter": "Vuelve a ingresar el token de acceso para guardar los cambios",
+        "saveFailed": "No se pudo guardar la configuración",
+        "registerFailed": "Se guardó, pero Meta no pudo registrar el número: {error}",
+        "registrationSkipped": "Credenciales guardadas y verificadas. Se omitió el registro de mensajes entrantes (sin PIN): revisa el estado del registro más abajo.",
+        "liveNamed": "En vivo: {name} ya puede recibir eventos.",
+        "connected": "WhatsApp conectado. Los eventos empezarán a llegar en un minuto.",
+        "connectedNamed": "Conectado a {name}",
+        "apiOk": "Conexión con la API exitosa",
+        "apiFailed": "Falló la conexión con la API",
+        "testFailed": "La prueba de conexión falló. Revisa tu red e inténtalo de nuevo.",
+        "liveOk": "El número está totalmente conectado: Meta está entregando eventos.",
+        "notRegistered": "El número no está registrado por completo. Revisa las verificaciones de abajo para ver qué paso falló.",
+        "verifyUnreachable": "No se pudo contactar el servicio de verificación.",
+        "resetConfirm": "Se eliminará la configuración actual de WhatsApp para que puedas ingresarla de nuevo. ¿Continuar?",
+        "resetFailed": "No se pudo restablecer la configuración",
+        "resetDone": "Configuración borrada. Ya puedes ingresar tus credenciales de nuevo.",
+        "webhookCopied": "URL del webhook copiada al portapapeles"
+      },
+      "phoneNumberIdPlaceholder": "p. ej., 100234567890123",
+      "wabaIdPlaceholder": "p. ej., 100234567890456"
     },
     "sections": {
       "overview": "Resumen",
@@ -1583,7 +1713,6 @@
       "profileSaved": "Perfil guardado",
       "emailChangeFailed": "Error al cambiar el correo: {message}",
       "profileSavedEmailCheck": "Perfil guardado — revisa tu correo para confirmar el cambio de dirección",
-
       "passwordTitle": "Contraseña",
       "passwordDesc": "Usa al menos {min} caracteres. Seguirás con la sesión iniciada en este dispositivo después de cambiarla.",
       "currentPassword": "Contraseña actual",
@@ -1597,7 +1726,6 @@
       "currentPasswordIncorrect": "La contraseña actual es incorrecta",
       "passwordUpdateFailed": "Error al actualizar la contraseña: {message}",
       "passwordUpdated": "Contraseña actualizada",
-
       "sessionsTitle": "Sesiones activas",
       "sessionsDesc": "Cierra sesión en todos los dispositivos donde estés conectado — incluido este. Útil si perdiste una laptop o compartiste tu contraseña.",
       "signOutAll": "Cerrar sesión en todos los dispositivos",
@@ -1606,7 +1734,9 @@
       "cancel": "Cancelar",
       "signingOut": "Cerrando sesión…",
       "signOutEverywhere": "Cerrar sesión en todas partes",
-      "signOutFailed": "Error al cerrar sesión: {message}"
+      "signOutFailed": "Error al cerrar sesión: {message}",
+      "unknownError": "Error desconocido",
+      "displayNamePlaceholder": "Ana Pérez"
     },
     "appearance": {
       "title": "Apariencia",
@@ -1615,7 +1745,8 @@
       "useMode": "Usar modo {mode}",
       "active": "Activo",
       "accentColor": "Color de acento",
-      "useTheme": "Usar tema {name}"
+      "useTheme": "Usar tema {name}",
+      "colorMode": "Modo de color"
     },
     "security": {
       "title": "Acceso y seguridad",
@@ -1673,7 +1804,7 @@
     },
     "aiConfig": {
       "title": "Configuración del agente",
-      "description": "Usa tu propia clave de OpenAI o Anthropic. wacrm llama al proveedor directamente con tu clave — sin costos de IA por asiento, y tus datos siguen siendo tuyos. Esto impulsa las respuestas redactadas con IA en la bandeja de entrada, el bot de respuesta automática y el Playground.",
+      "description": "Usa tu propia clave de OpenAI o Anthropic. Mehys CRM llama al proveedor directamente con tu clave — sin costos de IA por asiento, y tus datos siguen siendo tuyos. Esto impulsa las respuestas redactadas con IA en la bandeja de entrada, el bot de respuesta automática y el Playground.",
       "adminOnlyConfig": "Solo los administradores y propietarios pueden cambiar la configuración de IA.",
       "loadFailed": "Error al cargar la configuración de IA",
       "providerAndKey": "Proveedor y clave",
@@ -1736,7 +1867,259 @@
       "addDoc": "Agregar documento",
       "reindex": "Reindexar",
       "reindexTooltip": "Vuelve a vectorizar todos los documentos (p. ej. después de agregar una clave de embeddings)",
-      "loading": "Cargando…"
+      "loading": "Cargando…",
+      "editAction": "Editar",
+      "deleteAction": "Eliminar"
+    },
+    "quickReplies": {
+      "title": "Respuestas rápidas",
+      "description": "Fragmentos reutilizables —texto simple o un mensaje interactivo guardado— que tu equipo puede insertar desde el redactor de la bandeja.",
+      "new": "Nueva respuesta rápida",
+      "edit": "Editar respuesta rápida",
+      "empty": "Aún no hay respuestas rápidas. Crea una para reutilizarla en tus conversaciones.",
+      "name": "Nombre",
+      "namePlaceholder": "p. ej., Horario de atención",
+      "kindText": "Texto",
+      "kindInteractive": "Interactivo",
+      "textPlaceholder": "El texto del mensaje que se insertará",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "editAria": "Editar respuesta rápida",
+      "deleteAria": "Eliminar respuesta rápida",
+      "nameRequired": "Ponle un nombre a la respuesta rápida.",
+      "saveError": "No se pudo guardar la respuesta rápida.",
+      "updated": "Respuesta rápida actualizada.",
+      "created": "Respuesta rápida creada.",
+      "confirmDelete": "¿Eliminar esta respuesta rápida?",
+      "deleteError": "No se pudo eliminar la respuesta rápida."
+    },
+    "railLabel": "Secciones de configuración"
+  },
+  "Tasks": {
+    "title": "Tareas",
+    "subtitle": "Recordatorios de seguimiento para no perder ninguna venta.",
+    "new": "Nueva tarea",
+    "filterPending": "Pendientes",
+    "filterOverdue": "Vencidas",
+    "filterDone": "Hechas",
+    "loading": "Cargando…",
+    "empty": "No hay tareas aquí.",
+    "loadError": "No se pudieron cargar las tareas.",
+    "saveError": "No se pudo guardar el cambio.",
+    "created": "Tarea creada.",
+    "complete": "Marcar como hecha",
+    "reopen": "Reabrir",
+    "delete": "Eliminar",
+    "due": "Vence",
+    "fieldTitle": "¿Qué hay que hacer?",
+    "fieldDue": "Fecha y hora",
+    "fieldContact": "Contacto",
+    "noContact": "Sin contacto",
+    "fieldNotes": "Notas",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "retry": "Reintentar",
+    "loadErrorHint": "Revisa tu conexión e inténtalo de nuevo.",
+    "confirmDelete": "¿Eliminar la tarea «{title}»?",
+    "deleted": "Tarea eliminada.",
+    "contactSearchPlaceholder": "Busca por nombre o teléfono",
+    "contactNoResults": "No se encontraron contactos.",
+    "contactClear": "Quitar contacto",
+    "filtersLabel": "Filtrar tareas"
+  },
+  "Catalog": {
+    "title": "Catálogo",
+    "subtitle": "Productos y packs que ofreces, con precio y stock.",
+    "new": "Nuevo producto",
+    "edit": "Editar producto",
+    "delete": "Eliminar",
+    "loading": "Cargando…",
+    "empty": "Aún no hay productos. Crea el primero.",
+    "loadError": "No se pudo cargar el catálogo.",
+    "saveError": "No se pudo guardar el producto.",
+    "saved": "Producto guardado.",
+    "invalidPrice": "El precio no es válido.",
+    "invalidStock": "El stock debe ser un número entero mayor o igual a 0.",
+    "skuDuplicate": "Ya existe un producto con ese SKU.",
+    "confirmDelete": "¿Eliminar «{name}»?",
+    "colName": "Nombre",
+    "colSku": "SKU",
+    "colPrice": "Precio",
+    "colStock": "Stock",
+    "colStatus": "Estado",
+    "fieldCurrency": "Moneda",
+    "fieldDescription": "Descripción",
+    "stockPlaceholder": "Vacío = sin control",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "retry": "Reintentar",
+    "loadErrorHint": "Revisa tu conexión e inténtalo de nuevo.",
+    "invalidCurrency": "La moneda debe ser un código ISO de 3 letras (por ejemplo PEN o USD).",
+    "colActions": "Acciones",
+    "deleted": "Producto eliminado."
+  },
+  "Radar": {
+    "title": "Radar de seguimiento",
+    "subtitle": "Quién está esperando respuesta y qué conversaciones se enfriaron.",
+    "coolAfter": "Enfriado tras",
+    "hoursOption": "{count} horas",
+    "daysOption": "{count, plural, =1 {1 día} other {# días}}",
+    "waitingTitle": "Esperando tu respuesta",
+    "waitingHint": "El cliente escribió y aún no se le contesta.",
+    "cooledTitle": "Conversaciones enfriadas",
+    "cooledHint": "Ya se les respondió, pero el hilo lleva tiempo sin movimiento.",
+    "emptySection": "Todo al día por aquí.",
+    "loading": "Cargando…",
+    "loadError": "No se pudo cargar el radar.",
+    "open": "Abrir chat",
+    "followUp": "Crear seguimiento",
+    "taskTitle": "Dar seguimiento a {name}",
+    "taskCreated": "Seguimiento creado para mañana a las 9:00.",
+    "taskError": "No se pudo crear el seguimiento.",
+    "hoursAgo": "hace {count} h",
+    "daysAgo": "hace {count} d",
+    "retry": "Reintentar",
+    "loadErrorHint": "Revisa tu conexión e inténtalo de nuevo.",
+    "limitNotice": "Mostrando las {count} conversaciones más recientes."
+  },
+  "GatedButton": {
+    "tooltip": "Solo lectura: tu rol no permite {action}",
+    "reasons": {
+      "createBroadcasts": "crear difusiones",
+      "createTasks": "crear tareas",
+      "addOrImportContacts": "agregar o importar contactos",
+      "deleteContacts": "eliminar contactos",
+      "editCatalog": "editar el catálogo",
+      "createAutomations": "crear automatizaciones",
+      "createPipelines": "crear pipelines",
+      "createDeals": "crear negocios",
+      "createFlows": "crear flujos",
+      "sendMessages": "enviar mensajes"
+    }
+  },
+  "Notifications": {
+    "title": "Notificaciones",
+    "subtitle": "Aquí aparecen las conversaciones que otros compañeros te asignan.",
+    "retry": "Reintentar",
+    "markAllRead": "Marcar todo como leído",
+    "emptyTitle": "Aún no hay notificaciones",
+    "emptyHint": "Verás una alerta aquí cuando alguien te asigne una conversación.",
+    "unread": "Sin leer",
+    "markReadError": "No se pudo marcar la notificación como leída",
+    "markAllError": "No se pudo marcar todo como leído"
+  },
+  "Agents": {
+    "playground": {
+      "title": "Simulador",
+      "subtitle": "— prueba las respuestas como si fueras un cliente",
+      "reset": "Reiniciar",
+      "emptyTitle": "Envía un mensaje para ver cómo respondería tu agente.",
+      "emptyHint": "Usa tu base de conocimiento y se comporta igual que el bot de respuesta automática, incluido el traspaso a una persona.",
+      "goToSetup": "¿Aún no lo configuras? Ve a Configuración",
+      "handoff": "Aquí pasaría la conversación a una persona",
+      "thinking": "Pensando…",
+      "inputPlaceholder": "Escribe un mensaje como si fueras el cliente…",
+      "send": "Enviar mensaje",
+      "notConfigured": "Aún no hay un agente configurado: completa primero la configuración.",
+      "replyFailed": "No se pudo obtener una respuesta.",
+      "unreachable": "No se pudo contactar al agente."
+    },
+    "usage": {
+      "title": "Uso de tokens",
+      "description": "Tokens consumidos en tu clave del proveedor por los borradores y el bot de respuesta automática. Solo se registran conteos: aquí no se guarda el contenido de los mensajes.",
+      "lastDays": "Últimos {days} días",
+      "empty": "Aún no hay uso de IA en los últimos {days} días.",
+      "emptyHint": "Se irá llenando a medida que el asistente redacte borradores y responda automáticamente.",
+      "totalTokens": "Tokens totales",
+      "llmCalls": "Llamadas al modelo",
+      "autoReply": "Respuesta automática",
+      "drafts": "Borradores",
+      "tokensPerDay": "Tokens por día",
+      "chartSeries": "Tokens",
+      "byModel": "Por modelo",
+      "modelRow": "{tokens} tok · {calls, plural, one {# llamada} other {# llamadas}}",
+      "truncated": "Se muestra solo una parte del período: el uso es tan alto que aquí se resumen únicamente los registros más recientes.",
+      "loadFailed": "No se pudo cargar el uso",
+      "dayFormat": "d 'de' MMM"
+    },
+    "page": {
+      "title": "Agentes de IA",
+      "subtitle": "Tu agente de IA con tu propia clave: configúralo y pruébalo en el simulador antes de que responda a los clientes en la bandeja de entrada.",
+      "tabPlayground": "Simulador",
+      "tabSetup": "Configuración",
+      "tabUsage": "Uso"
+    }
+  },
+  "DashboardShell": {
+    "loading": "Cargando..."
+  },
+  "Interactive": {
+    "builder": {
+      "kindButtons": "Botones de respuesta",
+      "kindList": "Lista",
+      "body": "Cuerpo",
+      "bodyPlaceholder": "Lo que el cliente lee sobre las opciones",
+      "header": "Encabezado (opcional)",
+      "footer": "Pie (opcional)",
+      "showIds": "Mostrar los ID de respuesta (avanzado)",
+      "preview": "Vista previa",
+      "buttonsCount": "Botones ({count}/{max})",
+      "idPlaceholder": "id",
+      "buttonLabel": "Texto del botón",
+      "removeButton": "Quitar botón",
+      "addButton": "Agregar botón",
+      "listButtonLabel": "Texto del botón de la lista",
+      "rowsCount": "Filas ({count}/{max})",
+      "sectionTitle": "Título de la sección (opcional)",
+      "removeSection": "Quitar sección",
+      "rowTitle": "Título de la fila",
+      "removeRow": "Quitar fila",
+      "rowDescription": "Descripción (opcional)",
+      "addRow": "Agregar fila",
+      "addSection": "Agregar sección"
+    },
+    "preview": {
+      "bodyEmpty": "Cuerpo del mensaje…",
+      "buttonFallback": "Botón",
+      "menuFallback": "Menú"
+    }
+  },
+  "Auth": {
+    "signup": {
+      "namePlaceholder": "Juan Pérez",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "passwordPlaceholder": "Al menos 6 caracteres",
+      "confirmPlaceholder": "Repite tu contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+      "checkEmailTitle": "Revisa tu correo",
+      "checkEmailDesc": "Te enviamos un enlace de confirmación a <strong>{email}</strong>. Revisa tu bandeja de entrada y haz clic en el enlace para verificar tu cuenta.",
+      "backToLogin": "Volver a iniciar sesión",
+      "titleInvite": "Crear cuenta y unirme",
+      "title": "Crear cuenta",
+      "descInvite": "Verifica tu correo y luego acepta la invitación para unirte a tu equipo.",
+      "desc": "Empieza con tu CRM para WhatsApp",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta...",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión"
+    },
+    "forgot": {
+      "checkEmailTitle": "Revisa tu correo",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "checkEmailDesc": "Te enviamos un enlace para restablecer tu contraseña a <strong>{email}</strong>. Revisa tu bandeja de entrada.",
+      "backToLogin": "Volver a iniciar sesión",
+      "title": "Restablecer contraseña",
+      "desc": "Ingresa tu correo y te enviaremos un enlace para restablecerla",
+      "email": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando..."
     }
   }
 }

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireRole, toErrorResponse } from '@/lib/auth/account'
 import { sendTemplateMessage } from '@/lib/whatsapp/meta-api'
+import { supabaseAdmin } from '@/lib/automations/admin-client'
+import { signTemplateHeaderParams } from '@/lib/storage/private-media'
 import { decrypt } from '@/lib/whatsapp/encryption'
 import type { SendTimeParams } from '@/lib/whatsapp/template-send-builder'
 import { resolveTemplateRow } from '@/lib/whatsapp/template-body'
@@ -82,7 +84,12 @@ export async function POST(request: Request) {
       return rateLimitResponse(limit)
     }
 
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    }
     const {
       recipients: newRecipients,
       phone_numbers,
@@ -90,6 +97,21 @@ export async function POST(request: Request) {
       template_language,
       template_params,
     } = body
+
+    // La interfaz envía de a 10; el tope evita que una sola llamada dispare
+    // miles de plantillas y dañe la calidad del número en Meta.
+    const MAX_RECIPIENTS_PER_CALL = 50
+    const requestedCount = Array.isArray(newRecipients)
+      ? newRecipients.length
+      : Array.isArray(phone_numbers)
+        ? phone_numbers.length
+        : 0
+    if (requestedCount > MAX_RECIPIENTS_PER_CALL) {
+      return NextResponse.json(
+        { error: `Too many recipients per call (max ${MAX_RECIPIENTS_PER_CALL})` },
+        { status: 400 },
+      )
+    }
 
     // Normalize to a list of {phone, params} regardless of shape.
     let recipients: NewRecipient[]
@@ -192,7 +214,11 @@ export async function POST(request: Request) {
             templateName: template_name,
             language: resolvedTemplate.language,
             template: templateRow ?? undefined,
-            messageParams: recipient.messageParams,
+            messageParams: await signTemplateHeaderParams(
+              supabaseAdmin,
+              templateRow,
+              recipient.messageParams,
+            ),
             params: recipient.params ?? [],
           })
           sentMessageId = result.messageId

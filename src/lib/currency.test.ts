@@ -4,6 +4,7 @@ import {
   DEFAULT_CURRENCY,
   formatCurrency,
   formatCurrencyShort,
+  formatPrice,
 } from "./currency";
 
 describe("formatCurrency", () => {
@@ -61,5 +62,17 @@ describe("formatCurrencyShort", () => {
 
   it("falls back to the code prefix for unknown currencies (no throw)", () => {
     expect(formatCurrencyShort(1_000, "ZZZ")).toBe("ZZZ 1.0k");
+  });
+});
+
+describe("formatPrice", () => {
+  it("muestra centavos solo cuando el precio los tiene", () => {
+    expect(formatPrice(245.5, "PEN")).toMatch(/245[.,]50/);
+    expect(formatPrice(245, "PEN")).not.toMatch(/[.,]00/);
+    expect(formatPrice(29.9, "USD")).toMatch(/29[.,]90/);
+  });
+  it("no lanza con una moneda inválida", () => {
+    expect(() => formatPrice(10, "dólares")).not.toThrow();
+    expect(formatPrice(10.5, "dólares")).toContain("10");
   });
 });
